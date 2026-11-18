@@ -10,15 +10,15 @@ interface intf(input clk);
   clocking drv_cb @(posedge clk);
     default input #1step output #1step;
     input uo_out, uio_out, uio_oe;
-    output ena, ui_in, uio_in, rst_n;
+	  output ena, ui_in, uio_in;
   endclocking
   
   clocking mon_cb @(posedge clk);
     default input #1step;
-    input ena, rst_n, ui_in, uio_in, uo_out, uio_out, uio_oe;
+    input ena, ui_in, uio_in, uo_out, uio_out, uio_oe;
   endclocking 
   
-  modport drv_mon(clocking drv_cb, clk);
-  modport mon_mon(clocking mon_cb, clk);    
+  modport drv_mon(clocking drv_cb,rst_n);
+  modport mon_mon(clocking mon_cb,rst_n);    
   
 endinterface 

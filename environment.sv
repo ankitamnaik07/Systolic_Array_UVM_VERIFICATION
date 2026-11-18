@@ -1,5 +1,6 @@
 
 class environment extends uvm_env;
+
   `uvm_component_utils(environment)
 
   agent agt;
@@ -21,7 +22,7 @@ class environment extends uvm_env;
   function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
 
-    agt.mon.mon_port.connect(scb.mon_fifo);
+    agt.mon.mon_port.connect(scb.mon_fifo.analysis_export);
 
   endfunction
 

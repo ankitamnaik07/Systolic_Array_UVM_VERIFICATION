@@ -31,7 +31,7 @@ class monitor extends uvm_monitor;
       t = seq_item::type_id::create("t");
 
       t.ena     = vif.mon_cb.ena;
-      t.rst_n   = vif.mon_cb.rst_n;
+//      t.rst_n   = vif.mon_cb.rst_n;
       t.ui_in   = vif.mon_cb.ui_in;
       t.uio_in  = vif.mon_cb.uio_in;
       t.uo_out  = vif.mon_cb.uo_out;
