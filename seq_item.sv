@@ -6,20 +6,13 @@ class seq_item extends uvm_sequence_item;
   rand bit [7:0] ui_in;
   rand bit [7:0] uio_in;
 
-  rand bit [3:0] A[16];
-  rand bit [3:0] B[16];
+//  rand bit [3:0] A[16];
+  //rand bit [3:0] B[16];
 
   bit [7:0] uo_out;
   bit [7:0] uio_out;
   bit [7:0] uio_oe;
 
-  constraint c1 {
-    foreach(A[i])
-      A[i] inside {[0:15]};
-
-    foreach(B[i])
-      B[i] inside {[0:15]};
-  }
 
   function new(string name = "seq_item");
     super.new(name);

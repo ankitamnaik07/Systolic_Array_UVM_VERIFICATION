@@ -1,915 +1,470 @@
 class systolic_base_seq extends uvm_sequence #(seq_item);
   `uvm_object_utils(systolic_base_seq)
 
-  seq_item req;
-  seq_item matrix_req;
-
-  bit [3:0] A[16];
-  bit [3:0] B[16];
-
-  function new(string name="systolic_base_seq");
+  function new(string name = "systolic_base_seq");
     super.new(name);
   endfunction
 
-  // Randomize matrix A and B using seq_item
-  task randomize_matrices();
-
-    matrix_req = seq_item::type_id::create("matrix_req");
-
-    if(!matrix_req.randomize())
-      `uvm_fatal(get_type_name(),"Matrix randomization failed")
-
-    for(int i=0;i<16;i++) begin
-      A[i] = matrix_req.A[i];
-      B[i] = matrix_req.B[i];
-    end
-
-  endtask
-
-  // Drive one transaction
-  task drive(bit [7:0] data, bit [7:0] ctrl,
-             bit reset_n=1, bit enable=1);
-
+  task apply_reset(int cycles = 2);
     req = seq_item::type_id::create("req");
-
+    repeat(cycles) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b0; ena == 1'b1; uio_in == 8'h00; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
+    end
     start_item(req);
-
-    if(!req.randomize(ui_in,uio_in,rst_n) with {
-      ui_in  == data;
-      uio_in == ctrl;
-      rst_n  == reset_n;
-    })
-      `uvm_fatal(get_type_name(),"Transaction randomization failed")
-
-    req.ena = enable;
-
+    assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h00; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
     finish_item(req);
-
   endtask
 
-  // Reset
-  task reset_dut();
-
-    repeat(2)
-      drive(0,0,0);
-
-    drive(0,0,1);
-
+  task idle_cycles(int cycles = 1);
+    req = seq_item::type_id::create("req");
+    repeat(cycles) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h00; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
+    end
   endtask
 
-  // Load Matrix A
-  task load_A();
-
-    for(int i=0;i<16;i++)
-      drive(A[i],8'h01);
-
-    // Release LOAD_A
-    drive(0,0);
-
+  task load_rand_a(int cycles = 16);
+    req = seq_item::type_id::create("req");
+    repeat(cycles) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h01; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
+    end
+    idle_cycles(1);
   endtask
 
-  // Load Matrix B
-  task load_B();
-
-    for(int i=0;i<16;i++)
-      drive(B[i],8'h02);
-
-    // Release LOAD_B
-    drive(0,0);
-
+  task load_rand_b(int cycles = 16);
+    req = seq_item::type_id::create("req");
+    repeat(cycles) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h02; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
+    end
+    idle_cycles(1);
   endtask
 
-  // Wait for computation to finish
-  // Specified computation latency: 29 cycles
-  task wait_done();
-
-    repeat(29)
-      drive(0,0);
-
+  task start_and_wait_done();
+    req = seq_item::type_id::create("req");
+    start_item(req);
+    assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h04; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+    finish_item(req);
+    idle_cycles(32);
   endtask
 
-  // Start computation
-  task start_compute();
-
-    drive(0,8'h04);
-
-    wait_done();
-
+  task read_results(int cycles = 32);
+    req = seq_item::type_id::create("req");
+    repeat(cycles) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h08; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
+    end
+    idle_cycles(1);
   endtask
-
-  // Read result
-  // READ remains HIGH for consecutive byte samples
-  task read_result(int count=32);
-
-    repeat(count)
-      drive(0,8'h08);
-
-    // Release READ
-    drive(0,0);
-
-  endtask
-
 endclass
-
 
 class reset_idle_seq extends systolic_base_seq;
   `uvm_object_utils(reset_idle_seq)
 
-  function new(string name="reset_idle_seq");
+  function new(string name = "reset_idle_seq");
     super.new(name);
   endfunction
 
   task body();
-    reset_dut();
-
-    repeat(5)
-      drive(0,0);
-
-    reset_dut();
+    apply_reset(3);
+    start_and_wait_done();
+    read_results(32);
   endtask
 endclass
-
 
 class reset_abort_seq extends systolic_base_seq;
   `uvm_object_utils(reset_abort_seq)
 
-  function new(string name="reset_abort_seq");
+  function new(string name = "reset_abort_seq");
     super.new(name);
   endfunction
 
   task body();
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    // Reset during LOAD_A
-    drive(1,1);
-    drive(2,1);
-    reset_dut();
-
-    // Reset during LOAD_B
-    load_A();
-
-    drive(1,2);
-    drive(2,2);
-
-    reset_dut();
-
-    // Reset during COMPUTE
-    load_A();
-    load_B();
-
-    drive(0,4);
-
-    repeat(5)
-      drive(0,0);
-
-    reset_dut();
-
-    // Reset during WB
-    load_A();
-    load_B();
-
-    drive(0,4);
-
-    repeat(27)
-      drive(0,0);
-
-    reset_dut();
-
-    // Reset during DONE
-    load_A();
-    load_B();
-
-    start_compute();
-
-    reset_dut();
-
-    // Reset during READ
-    load_A();
-    load_B();
-
-    start_compute();
-
-    repeat(5)
-      drive(0,8);
-
-    reset_dut();
-
-    // Compute after reset without reloading
-    start_compute();
-
-    read_result();
-
+    apply_reset(2);
+    load_rand_a(8);
+    apply_reset(2);
+    start_and_wait_done();
+    read_results(32);
   endtask
-
 endclass
-
 
 class ena_check_seq extends systolic_base_seq;
   `uvm_object_utils(ena_check_seq)
 
-  function new(string name="ena_check_seq");
+  function new(string name = "ena_check_seq");
     super.new(name);
   endfunction
 
   task body();
-
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    load_A();
-    load_B();
-
-    // START with ENA LOW
     req = seq_item::type_id::create("req");
-    start_item(req);
-
-    if(!req.randomize(ui_in,uio_in,rst_n,ena) with {
-      ui_in  == 0;
-      uio_in == 8'h04;
-      rst_n  == 1;
-      ena    == 1;
-    })
-      `uvm_fatal(get_type_name(),"Randomization failed")
-
-    finish_item(req);
-
-    // Toggle ENA during computation
-    repeat(28) begin
-
-      req = seq_item::type_id::create("req");
+    apply_reset(2);
+    repeat(16) begin
       start_item(req);
-
-      if(!req.randomize(ui_in,uio_in,rst_n,ena) with {
-        ui_in  == 0;
-        uio_in == 0;
-        rst_n  == 1;
-        ena inside {0,1};
-      })
-        `uvm_fatal(get_type_name(),"Randomization failed")
-
+      assert(req.randomize() with {rst_n == 1'b1; uio_in == 8'h01; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
-
     end
-
-    read_result();
-
+    idle_cycles(1);
+    repeat(16) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; uio_in == 8'h02; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
+    end
+    idle_cycles(1);
+    start_and_wait_done();
+    read_results(32);
   endtask
-
 endclass
 
 class matrix_load_seq extends systolic_base_seq;
   `uvm_object_utils(matrix_load_seq)
 
-  function new(string name="matrix_load_seq");
+  function new(string name = "matrix_load_seq");
     super.new(name);
   endfunction
 
   task body();
-    // Matrix A
-    for(int i=0;i<16;i++)
-      A[i]=i;
-
-    // Matrix B: Identity
-    for(int i=0;i<16;i++)
-      B[i]=0;
-
-    B[0]=1;
-    B[5]=1;
-    B[10]=1;
-    B[15]=1;
-
-    // Verify A using identity matrix
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
-
-    // Verify B using identity matrix
-    for(int i=0;i<16;i++)
-      A[i]=B[i];
-
-    for(int i=0;i<16;i++)
-      B[i]=15-i;
-
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
-
-    // Verify both matrices
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
-
+    apply_reset(2);
+    load_rand_a(16);
+    load_rand_b(16);
+    start_and_wait_done();
+    read_results(32);
   endtask
 endclass
-
-
 
 class done_load_seq extends systolic_base_seq;
   `uvm_object_utils(done_load_seq)
 
-  function new(string name="done_load_seq");
+  function new(string name = "done_load_seq");
     super.new(name);
   endfunction
 
   task body();
-   for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    load_A();
-    load_B();
-    start_compute();
-
-    // Load A directly from DONE
-    load_A();
-
-    // Load B after release gap
-    repeat(2)
-      drive(0,0);
-    load_B();
-
-    start_compute();
-    read_result();
+    apply_reset(2);
+    load_rand_a(16);
+    load_rand_b(16);
+    start_and_wait_done();
+    read_results(32);
+    load_rand_a(16);
+    load_rand_b(16);
+    start_and_wait_done();
+    read_results(32);
   endtask
-
 endclass
 
 class matrix_reload_seq extends systolic_base_seq;
   `uvm_object_utils(matrix_reload_seq)
 
-  function new(string name="matrix_reload_seq");
+  function new(string name = "matrix_reload_seq");
     super.new(name);
   endfunction
 
   task body();
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
-
-    // Reload only A
-    for(int i=0;i<16;i++)
-      A[i]=15-i;
-
-    load_A();
-    start_compute();
-    read_result();
-
-    // Reload only B
-    for(int i=0;i<16;i++)
-     B[i]=i;
-
-    load_B();
-
-    start_compute();
-    read_result();
+    apply_reset(2);
+    load_rand_a(16);
+    load_rand_b(16);
+    start_and_wait_done();
+    read_results(32);
+    load_rand_a(16);
+    start_and_wait_done();
+    read_results(32);
+    load_rand_b(16);
+    start_and_wait_done();
+    read_results(32);
   endtask
-
 endclass
-
 
 class matrix_order_seq extends systolic_base_seq;
   `uvm_object_utils(matrix_order_seq)
 
-  function new(string name="matrix_order_seq");
+  function new(string name = "matrix_order_seq");
     super.new(name);
   endfunction
 
   task body();
-
-   for(int i=0;i<16;i++) begin
-      A[i]=(i*3+1)%16;
-      B[i]=(i*5+2)%16;
+    logic [3:0] val_b;
+    req = seq_item::type_id::create("req");
+    apply_reset(2);
+    for (int i = 0; i < 16; i++) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h01; ui_in == {4'h0, i[3:0]};}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
     end
-
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
-
-    // Exchange A and B
-    for(int i=0;i<16;i++) begin
-      A[i]=(i*5+2)%16;
-      B[i]=(i*3+1)%16;
+    idle_cycles(1);
+    for (int i = 0; i < 16; i++) begin
+      val_b = 15 - i;
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h02; ui_in == {4'h0, val_b};}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
     end
-
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
+    idle_cycles(1);
+    start_and_wait_done();
+    read_results(32);
   endtask
-
 endclass
 
 class arithmetic_seq extends systolic_base_seq;
   `uvm_object_utils(arithmetic_seq)
 
-  function new(string name="arithmetic_seq");
+  function new(string name = "arithmetic_seq");
     super.new(name);
   endfunction
 
   task body();
-    // Both matrices zero
-    for(int i=0;i<16;i++) begin
-      A[i]=0;
-      B[i]=0;
+    req = seq_item::type_id::create("req");
+    apply_reset(2);
+    repeat(16) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h01; ui_in == 8'h01;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
     end
-
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
-
-    // Identity x known matrix
-    for(int i=0;i<16;i++) begin
-      A[i]=0;
-      B[i]=i;
+    idle_cycles(1);
+    repeat(16) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h02; ui_in == 8'h01;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
     end
-
-    A[0]=1;
-    A[5]=1;
-    A[10]=1;
-    A[15]=1;
-
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
-
-    // Both matrices filled with ones
-    for(int i=0;i<16;i++) begin
-      A[i]=1;
-      B[i]=1;
-    end
-
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
+    idle_cycles(1);
+    start_and_wait_done();
+    read_results(32);
   endtask
-
 endclass
 
 class overflow_seq extends systolic_base_seq;
   `uvm_object_utils(overflow_seq)
 
-  function new(string name="overflow_seq");
+  function new(string name = "overflow_seq");
     super.new(name);
   endfunction
 
-  task run_value(
-    int target,
-    bit [3:0] a0,a1,a2,a3,
-    bit [3:0] b0,b1,b2,b3
-  );
-
-    for(int i=0;i<16;i++) begin
-      A[i]=0;
-      B[i]=0;
-    end
-
-    A[0]=a0;
-    A[1]=a1;
-    A[2]=a2;
-    A[3]=a3;
-
-    B[0]=b0;
-    B[4]=b1;
-    B[8]=b2;
-    B[12]=b3;
-
-    load_A();
-    load_B();
-
-    start_compute();
-    read_result();
-
-    `uvm_info("BOUNDARY",$sformatf("Testing expected C[0][0] = %0d",target),UVM_LOW)
-  endtask
-
   task body();
-    // 255
-    run_value(255,0,0,2,15,0,0,15,15);
-
-    // 256
-    run_value(256,0,0,4,14,0,0,15,14);
-
-    // 257
-    run_value(257,0,0,4,15,0,0,8,15);
-
-    // 511
-    run_value(511,0,6,14,15,0,15,14,15);
-
-    // 512
-    run_value(512,0,7,14,15,0,11,15,15);
-
-    // 768
-    run_value(768,9,14,15,15,12,15,15,15);
-
-    // Maximum 900
-    run_value(900,15,15,15,15,15,15,15,15);
-
+    req = seq_item::type_id::create("req");
+    apply_reset(2);
+    repeat(16) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h01; ui_in == 8'h0F;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
+    end
+    idle_cycles(1);
+    repeat(16) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h02; ui_in == 8'h0F;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
+    end
+    idle_cycles(1);
+    start_and_wait_done();
+    read_results(32);
   endtask
 endclass
 
 class read_wrap_seq extends systolic_base_seq;
   `uvm_object_utils(read_wrap_seq)
 
-  function new(string name="read_wrap_seq");
+  function new(string name = "read_wrap_seq");
     super.new(name);
   endfunction
 
   task body();
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    load_A();
-    load_B();
-
-    start_compute();
-    // Read 40 bytes to check pointer wrap
-    read_result(40);
-
-    // New computation
-    start_compute();
-
-    // Read 10 bytes
-    repeat(10)
-      drive(0,8);
-
-    // Pause and resume
-    drive(0,0);
-
-    read_result(22);
+    apply_reset(2);
+    load_rand_a(16);
+    load_rand_b(16);
+    start_and_wait_done();
+    read_results(16);
+    idle_cycles(4);
+    read_results(48);
   endtask
-
 endclass
 
 class data_retain_seq extends systolic_base_seq;
   `uvm_object_utils(data_retain_seq)
 
-  function new(string name="data_retain_seq");
+  function new(string name = "data_retain_seq");
     super.new(name);
   endfunction
 
   task body();
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
-
-    // Wait in DONE
-    repeat(20)
-      drive(0,0);
-
-    // Compute again without loading
-    start_compute();
-    read_result();
+    apply_reset(2);
+    load_rand_a(16);
+    load_rand_b(16);
+    start_and_wait_done();
+    idle_cycles(20);
+    read_results(32);
   endtask
-
 endclass
-
 
 class random_test_seq extends systolic_base_seq;
   `uvm_object_utils(random_test_seq)
 
-  function new(string name="random_test_seq");
+  function new(string name = "random_test_seq");
     super.new(name);
   endfunction
 
   task body();
-
-    repeat(500) begin
-
-      // Randomize matrix A and B using seq_item
-      randomize_matrices();
-
-      load_A();
-      load_B();
-      start_compute();
-
-      // Random pause before reading
-      repeat($urandom_range(1,3))
-        drive(0,0);
-
-      read_result();
-
+    apply_reset(2);
+    repeat(5) begin
+      load_rand_a(16);
+      load_rand_b(16);
+      start_and_wait_done();
+      read_results(32);
     end
-
   endtask
-
 endclass
-
 
 class priority_seq extends systolic_base_seq;
- `uvm_object_utils(priority_seq)
+  `uvm_object_utils(priority_seq)
 
-  function new(string name="priority_seq");
+  function new(string name = "priority_seq");
     super.new(name);
   endfunction
 
   task body();
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
+    req = seq_item::type_id::create("req");
+    apply_reset(2);
+    // Simultaneous LOAD_A and LOAD_B -> LOAD_A wins
+    repeat(16) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h03; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
     end
-
-    // Request combinations in IDLE
-    for(int i=0;i<16;i++) begin
-
-      reset_dut();
-
-      drive(5,i);
-
-      // Allow time for selected operation
-      repeat(29)
-        drive(0,0);
+    idle_cycles(1);
+    // Simultaneous LOAD_B and START -> LOAD_B wins
+    repeat(16) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h06; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
     end
-
-    // Request combinations in DONE
-    for(int i=0;i<16;i++) begin
-      reset_dut();
-      load_A();
-      load_B();
-      start_compute();
-
-      drive(5,i);
-
-      repeat(29)
-        drive(0,0);
-
-    end
+    idle_cycles(1);
+    start_and_wait_done();
+    read_results(32);
   endtask
-
 endclass
-
-
 
 class wb_start_seq extends systolic_base_seq;
- `uvm_object_utils(wb_start_seq)
+  `uvm_object_utils(wb_start_seq)
 
-  function new(string name="wb_start_seq");
+  function new(string name = "wb_start_seq");
     super.new(name);
   endfunction
 
   task body();
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    load_A();
-    load_B();
-
-    // Start computation
-    drive(0,4);
-
-    // Reach final writeback
-    repeat(27)
-      drive(0,0);
-
-    // START during final WB
-    drive(0,4);
-
-    // Allow original computation to finish
-    wait_done();
-    read_result();
-
+    req = seq_item::type_id::create("req");
+    apply_reset(2);
+    load_rand_a(16);
+    load_rand_b(16);
+    // Assert start
+    start_item(req);
+    assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h04; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+    finish_item(req);
+    idle_cycles(28);
+    // Assert start on final writeback cycle (ignored while BUSY)
+    start_item(req);
+    assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h04; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+    finish_item(req);
+    idle_cycles(3);
+    read_results(32);
   endtask
 endclass
-
 
 class invalid_req_seq extends systolic_base_seq;
   `uvm_object_utils(invalid_req_seq)
 
-  function new(string name="invalid_req_seq");
+  function new(string name = "invalid_req_seq");
     super.new(name);
   endfunction
 
   task body();
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    // READ during IDLE
-    drive(0,8);
-    drive(0,0);
-
-    load_A();
-    load_B();
-
-    // Start computation
-    drive(0,4);
-
-    // Invalid requests during COMPUTE
-    repeat(5) begin
-      drive(5,1);
-      drive(6,2);
-      drive(0,4);
-      drive(0,8);
-    end
-
-    // Wait for computation to finish
-    wait_done();
-    read_result();
-
-    start_compute();
-
-    // Enter READ
-    drive(0,8);
-
-    // Invalid LOAD and START during READ
-    drive(5,1);
-    drive(6,2);
-    drive(0,4);
-
-    // Continue reading
-    repeat(29)
-      drive(0,8);
-
-    drive(0,0);
+    req = seq_item::type_id::create("req");
+    apply_reset(2);
+    // Try READ in IDLE (should be ignored)
+    read_results(4);
+    load_rand_a(16);
+    load_rand_b(16);
+    start_and_wait_done();
+    read_results(32);
   endtask
-
 endclass
-
-
 
 class load_length_seq extends systolic_base_seq;
   `uvm_object_utils(load_length_seq)
 
-  function new(string name="load_length_seq");
+  function new(string name = "load_length_seq");
     super.new(name);
   endfunction
 
   task body();
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    // Load complete matrices first
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
-
-    // Partial LOAD_A: 8 cycles
-    repeat(8)
-      drive(5,1);
-
-    drive(0,0);
-
-    start_compute();
-    read_result();
-
-    // Overlength LOAD_A: 20 cycles
-    repeat(20)
-      drive(10,1);
-
-    drive(0,0);
-
-    start_compute();
-    read_result();
+    apply_reset(2);
+    load_rand_a(20);
+    load_rand_b(16);
+    start_and_wait_done();
+    read_results(32);
   endtask
-
 endclass
-
 
 class back2back_seq extends systolic_base_seq;
   `uvm_object_utils(back2back_seq)
 
-  function new(string name="back2back_seq");
+  function new(string name = "back2back_seq");
     super.new(name);
   endfunction
 
   task body();
-
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
+    apply_reset(2);
+    repeat(2) begin
+      load_rand_a(16);
+      load_rand_b(16);
+      start_and_wait_done();
+      read_results(32);
     end
-
-    load_A();
-    load_B();
-    start_compute();
-    read_result();
-
-    start_compute();
-    read_result();
-
-    start_compute();
-    read_result();
-
   endtask
 endclass
-
 
 class upper_bits_seq extends systolic_base_seq;
-
   `uvm_object_utils(upper_bits_seq)
 
-  function new(string name="upper_bits_seq");
+  function new(string name = "upper_bits_seq");
     super.new(name);
   endfunction
 
   task body();
-
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
+    req = seq_item::type_id::create("req");
+    apply_reset(2);
+    repeat(16) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'hF1; ui_in[7:4] == 4'hF;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
     end
-
-    // Load A with upper nibble 0
-    for(int i=0;i<16;i++)
-      drive({4'h0,A[i]},1);
-
-    drive(0,0);
-
-    load_B();
-
-    start_compute();
-    read_result();
-
-    // Load A with upper nibble F
-    for(int i=0;i<16;i++)
-      drive({4'hF,A[i]},1);
-
-    drive(0,0);
-
-    start_compute();
-    read_result();
-
-    // Change upper nibble of B also
-    for(int i=0;i<16;i++)
-      drive({4'hA,B[i]},2);
-
-    drive(0,0);
-
-    start_compute();
-    read_result();
-
+    idle_cycles(1);
+    repeat(16) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'hF2; ui_in[7:4] == 4'hF;}) else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
+    end
+    idle_cycles(1);
+    start_and_wait_done();
+    read_results(32);
   endtask
-
 endclass
 
-
 class read_retain_seq extends systolic_base_seq;
-
   `uvm_object_utils(read_retain_seq)
 
-  function new(string name="read_retain_seq");
+  function new(string name = "read_retain_seq");
     super.new(name);
   endfunction
 
   task body();
-
-    for(int i=0;i<16;i++) begin
-      A[i]=i;
-      B[i]=15-i;
-    end
-
-    load_A();
-    load_B();
-
-    start_compute();
-
-    // Read first 10 bytes
-    repeat(10)
-      drive(0,8);
-
-    // Pause READ
-    drive(0,0);
-
-    // Resume from previous pointer
-    read_result(22);
-
+    apply_reset(2);
+    load_rand_a(16);
+    load_rand_b(16);
+    start_and_wait_done();
+    read_results(32);
+    idle_cycles(10);
+    read_results(32);
   endtask
-
 endclass

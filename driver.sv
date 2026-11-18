@@ -27,17 +27,17 @@ class driver extends uvm_driver #(seq_item);
 
   endtask
 
-  task drive(seq_item req);
-	  @(negedge vif.clk)
-	  vif.rst_n<=req.rst_n;
-    @(vif.drv_cb);
+task drive(seq_item req);
 
-//    vif.drv_cb.rst_n  <= req.rst_n;
-    vif.drv_cb.ena    <= req.ena;
-    vif.drv_cb.ui_in  <= req.ui_in;
-    vif.drv_cb.uio_in <= req.uio_in;
+  // Asynchronous active-low reset
+  vif.rst_n = req.rst_n;
 
-  endtask
+  @(vif.drv_cb);
 
+  vif.drv_cb.ena    <= req.ena;
+  vif.drv_cb.ui_in  <= req.ui_in;
+  vif.drv_cb.uio_in <= req.uio_in;
+
+endtask
 endclass
 
