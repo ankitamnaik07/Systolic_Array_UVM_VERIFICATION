@@ -1,121 +1,223 @@
+
 class scoreboard extends uvm_scoreboard;
   `uvm_component_utils(scoreboard)
-  
-  uvm_tlm_analysis_fifo #(seq_item)mon_fifo;
+
+  uvm_tlm_analysis_fifo #(seq_item) mon_fifo;
   seq_item t;
-  
-  bit [3:0]arr_a[bit [3:0]];
-  bit [3:0]arr_b[bit [3:0]];
-  bit [7:0]result_arr[bit [5:0]];
-  bit [10:0]exp_arr[bit [3:0]]; 
-  
+
+  bit [3:0] arr_a[0:15];
+  bit [3:0] arr_b[0:15];
+
+  bit [10:0] exp_arr[0:15];
+
   bit in_read;
-  
+
+  int load_a_idx;
+  int load_b_idx;
+  int read_idx;
+
   int pass_cnt, fail_cnt, total_cnt;
-  
-  function new(string name = "scoreboard",uvm_component parent = null);
+  int reset_fail_cnt;
+
+  function new(string name = "scoreboard",
+               uvm_component parent = null);
     super.new(name, parent);
   endfunction
-  
+
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     mon_fifo = new("mon_fifo", this);
   endfunction
-  
+
+  // Clear scoreboard model
   function void clear_model();
-    arr_a.delete(); arr_b.delete(); result_arr.delete(); exp_arr.delete();
+
     for(int i = 0; i < 16; i++) begin
       arr_a[i] = 0;
       arr_b[i] = 0;
+      exp_arr[i] = 0;
     end
+
+    load_a_idx = 0;
+    load_b_idx = 0;
+    read_idx = 0;
+
     in_read = 0;
+
   endfunction
-  
+
+  // Calculate expected matrix multiplication
+  function void calculate_expected();
+
+    int unsigned sum;
+
+    for(int i = 0; i < 16; i += 4) begin
+
+      for(int j = 0; j < 4; j++) begin
+
+        sum = int'(arr_a[i])   * int'(arr_b[j])     +
+              int'(arr_a[i+1]) * int'(arr_b[j+4])   +
+              int'(arr_a[i+2]) * int'(arr_b[j+8])   +
+              int'(arr_a[i+3]) * int'(arr_b[j+12]);
+
+        exp_arr[i+j] = sum[10:0];
+
+      end
+
+    end
+
+  endfunction
+
+  // Compare one output byte
+  function void compare_byte();
+
+    bit [7:0] expected_byte;
+
+    if(read_idx % 2 == 0)
+      expected_byte = exp_arr[read_idx/2][7:0];
+
+    else
+      expected_byte = {6'b0, exp_arr[read_idx/2][9:8]};
+
+    total_cnt++;
+
+    if(t.uo_out !== expected_byte) begin
+
+      fail_cnt++;
+
+      `uvm_error("SCB",
+        $sformatf("BYTE[%0d]: actual=0x%0h expected=0x%0h",
+                  read_idx, t.uo_out, expected_byte))
+
+    end
+    else begin
+
+      pass_cnt++;
+
+      `uvm_info("SCB",
+        $sformatf("BYTE[%0d]: actual=0x%0h expected=0x%0h PASS",
+                  read_idx, t.uo_out, expected_byte),
+        UVM_HIGH)
+
+    end
+
+    // Wrap after 32 bytes
+    if(read_idx == 31)
+      read_idx = 0;
+    else
+      read_idx++;
+
+  endfunction
+
+  // Main scoreboard process
   task run_phase(uvm_phase phase);
+
     pass_cnt = 0;
     fail_cnt = 0;
     total_cnt = 0;
+    reset_fail_cnt = 0;
+
     clear_model();
-      
-    forever begin 
+
+    forever begin
+
       mon_fifo.get(t);
-        
-      if(!t.rst_n)begin
-        total_cnt++;
-        if(t.uo_out != 8'd0 || t.uio_out[5:4] != 2'b0)begin
-          fail_cnt++;
-          `uvm_error("SCB", $sformatf("after reset: uo_out=%0h BUSY/DONE=%b expected all 0", t.uo_out, t.uio_out[5:4]));
+
+      // Reset checking
+      if(!t.rst_n) begin
+
+        if(t.uo_out !== 8'd0 || t.uio_out[5:4] !== 2'b00) begin
+
+          reset_fail_cnt++;
+
+          `uvm_error("SCB",
+            $sformatf("After reset: uo_out=%0h BUSY/DONE=%b expected all 0",
+                      t.uo_out, t.uio_out[5:4]))
+
         end
-        else pass_cnt++;
+
         clear_model();
+
       end
-        
-      else begin 
-        
+
+      else begin
+
+        // Ignore requests while DUT is BUSY
         if(t.uio_out[4]) begin
         end
-        
-        else if(in_read) begin
-          if(t.uio_in[3]) begin
-            result_arr[result_arr.size()] = t.uo_out;
-            if(result_arr.size() == 32) begin
-              compare(arr_a, arr_b, result_arr);
-              result_arr.delete();
-            end
-          end
-          else in_read = 0;
-        end
-          
+
+        // LOAD_A has highest priority
         else if(t.uio_in[0]) begin
-          if(arr_a.size() == 16) arr_a.delete();
-          arr_a[arr_a.size()] = t.ui_in[3:0];
+
+          if(load_a_idx < 16) begin
+            arr_a[load_a_idx] = t.ui_in[3:0];
+            load_a_idx++;
+          end
+
+          in_read = 0;
+          load_b_idx = 0;
+
         end
-          
+
+        // LOAD_B has second priority
         else if(t.uio_in[1]) begin
-          if(arr_b.size() == 16) arr_b.delete();
-          arr_b[arr_b.size()] = t.ui_in[3:0];
+
+          if(load_b_idx < 16) begin
+            arr_b[load_b_idx] = t.ui_in[3:0];
+            load_b_idx++;
+          end
+
+          in_read = 0;
+          load_a_idx = 0;
+
         end
-          
+
+        // START has third priority
         else if(t.uio_in[2]) begin
+
+          calculate_expected();
+
+          read_idx = 0;
+          in_read = 0;
+
+          load_a_idx = 0;
+          load_b_idx = 0;
+
         end
-          
-        else if(t.uio_in[3] && t.uio_out[5]) begin
-          in_read = 1;
-          result_arr[result_arr.size()] = t.uo_out;
+
+        // READ has lowest priority
+        else if(t.uio_in[3]) begin
+
+          if(t.uio_out[5]) begin
+            in_read = 1;
+            compare_byte();
+          end
+
         end
-          
+
+        // READ deasserted: pause reading
+        else begin
+
+          in_read = 0;
+
+        end
+
       end
-        
+
     end
+
   endtask
-  
-  function void compare(bit [3:0] a[bit [3:0]], bit [3:0] b[bit [3:0]], bit [7:0] res[bit [5:0]]);
-    int errs = 0;
-    
-    for(int i = 0; i < 16; i += 4)begin
-      for(int j = 0; j < 4; j ++)begin 
-        exp_arr[i+j] = a[i]*b[j] + a[i+1]*b[j+4] + a[i+2]*b[j+8] + a[i+3]*b[j+12];
-      end
-    end
-      
-    foreach(exp_arr[i])begin 
-      if(exp_arr[i] != {res[2*i +1][1:0], res[2*i]})begin
-        errs++;
-        `uvm_error("SCB", $sformatf("C[%0d][%0d]: actual=0x%0h expected=0x%0h", i/4, i%4, {res[2*i+1][1:0], res[2*i]}, exp_arr[i]));
-      end
-    end
-    
-    total_cnt++;
-    if(errs == 0) pass_cnt++;
-    else begin
-      fail_cnt++;
-      `uvm_info("SCB", $sformatf("inputs A: %p B: %p actual: %p expected: %p", a, b, res, exp_arr), UVM_LOW)
-    end
-  endfunction
-  
+
+  // Report phase
   function void report_phase(uvm_phase phase);
     super.report_phase(phase);
-    `uvm_info("SCB", $sformatf("TOTAL=%0d PASS=%0d FAIL=%0d", total_cnt, pass_cnt, fail_cnt), UVM_LOW)
+
+    `uvm_info("SCB",
+      $sformatf("TOTAL=%0d PASS=%0d FAIL=%0d RESET_FAIL=%0d",
+                total_cnt, pass_cnt, fail_cnt, reset_fail_cnt),
+      UVM_LOW)
+
   endfunction
-     
+
 endclass
+

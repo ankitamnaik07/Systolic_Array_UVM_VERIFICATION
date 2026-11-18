@@ -5,7 +5,6 @@ class monitor extends uvm_monitor;
   uvm_analysis_port #(seq_item) mon_port;
 
   virtual intf vif;
-  seq_item t;
 
   function new(string name = "monitor",
                uvm_component parent = null);
@@ -22,6 +21,8 @@ class monitor extends uvm_monitor;
   endfunction
 
   task run_phase(uvm_phase phase);
+
+    seq_item t;
 
     forever begin
 

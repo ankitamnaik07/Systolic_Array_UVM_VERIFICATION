@@ -36,13 +36,6 @@ class driver extends uvm_driver #(seq_item);
     vif.drv_cb.ui_in  <= req.ui_in;
     vif.drv_cb.uio_in <= req.uio_in;
 
-    if(req.uio_in[3]) begin
-
-      do @(vif.drv_cb);
-      while(vif.drv_cb.uio_out[5] !== 1'b1);
-
-    end
-
   endtask
 
 endclass
