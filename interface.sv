@@ -9,12 +9,12 @@ interface intf(input clk);
   
   clocking drv_cb @(posedge clk);
     default input #1step output #1step;
-    input uo_out, uio_out, uio_oe, ena;
-    output ui_in, uio_in, rst_n;
+    input uo_out, uio_out, uio_oe;
+    output ena, ui_in, uio_in, rst_n;
   endclocking
   
   clocking mon_cb @(posedge clk);
-    default input #1 step;
+    default input #1step;
     input ena, rst_n, ui_in, uio_in, uo_out, uio_out, uio_oe;
   endclocking 
   
