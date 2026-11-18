@@ -1,6 +1,8 @@
 class systolic_base_seq extends uvm_sequence #(seq_item);
   `uvm_object_utils(systolic_base_seq)
+
   seq_item req;
+  seq_item matrix_req;
 
   bit [3:0] A[16];
   bit [3:0] B[16];
@@ -9,65 +11,105 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     super.new(name);
   endfunction
 
+  // Randomize matrix A and B using seq_item
+  task randomize_matrices();
+
+    matrix_req = seq_item::type_id::create("matrix_req");
+
+    if(!matrix_req.randomize())
+      `uvm_fatal(get_type_name(),"Matrix randomization failed")
+
+    for(int i=0;i<16;i++) begin
+      A[i] = matrix_req.A[i];
+      B[i] = matrix_req.B[i];
+    end
+
+  endtask
+
   // Drive one transaction
-  task drive(bit [7:0] data, bit [7:0] ctrl, bit reset_n=1);
-	req = seq_item::type_id::create("req");
-	start_item(req);
-	assert(req.randomize(ui_in,uio_in,rst_n) with {
-	ui_in  == data;
-      	uio_in == ctrl;
-      	rst_n  == reset_n;
+  task drive(bit [7:0] data, bit [7:0] ctrl,
+             bit reset_n=1, bit enable=1);
+
+    req = seq_item::type_id::create("req");
+
+    start_item(req);
+
+    if(!req.randomize(ui_in,uio_in,rst_n) with {
+      ui_in  == data;
+      uio_in == ctrl;
+      rst_n  == reset_n;
     })
-    	else `uvm_error(get_type_name(),"Randomization failed")
-    	finish_item(req);	
+      `uvm_fatal(get_type_name(),"Transaction randomization failed")
+
+    req.ena = enable;
+
+    finish_item(req);
+
   endtask
 
   // Reset
   task reset_dut();
+
     repeat(2)
       drive(0,0,0);
+
     drive(0,0,1);
+
   endtask
 
   // Load Matrix A
   task load_A();
+
     for(int i=0;i<16;i++)
       drive(A[i],8'h01);
-    // Release load
+
+    // Release LOAD_A
     drive(0,0);
+
   endtask
 
   // Load Matrix B
   task load_B();
+
     for(int i=0;i<16;i++)
       drive(B[i],8'h02);
-    // Release load
+
+    // Release LOAD_B
     drive(0,0);
+
   endtask
 
   // Wait for computation to finish
   // Specified computation latency: 29 cycles
   task wait_done();
+
     repeat(29)
       drive(0,0);
+
   endtask
 
   // Start computation
   task start_compute();
+
     drive(0,8'h04);
+
     wait_done();
+
   endtask
 
   // Read result
+  // READ remains HIGH for consecutive byte samples
   task read_result(int count=32);
+
     repeat(count)
       drive(0,8'h08);
+
     // Release READ
     drive(0,0);
+
   endtask
 
 endclass
-
 
 
 class reset_idle_seq extends systolic_base_seq;
@@ -173,6 +215,7 @@ class ena_check_seq extends systolic_base_seq;
   endfunction
 
   task body();
+
     for(int i=0;i<16;i++) begin
       A[i]=i;
       B[i]=15-i;
@@ -181,32 +224,40 @@ class ena_check_seq extends systolic_base_seq;
     load_A();
     load_B();
 
-    // START with ENA randomized
+    // START with ENA LOW
     req = seq_item::type_id::create("req");
     start_item(req);
 
-    assert(req.randomize(ui_in,uio_in,ena) with {
-      ui_in==0;
-      uio_in==8'h04;
-      ena==0;
+    if(!req.randomize(ui_in,uio_in,rst_n,ena) with {
+      ui_in  == 0;
+      uio_in == 8'h04;
+      rst_n  == 1;
+      ena    == 0;
     })
-    else `uvm_error(get_type_name(),"Randomization failed")
+      `uvm_fatal(get_type_name(),"Randomization failed")
 
     finish_item(req);
 
     // Toggle ENA during computation
     repeat(28) begin
+
+      req = seq_item::type_id::create("req");
       start_item(req);
-      assert(req.randomize(ui_in,uio_in,ena) with {
-        ui_in==0;
-        uio_in==0;
+
+      if(!req.randomize(ui_in,uio_in,rst_n,ena) with {
+        ui_in  == 0;
+        uio_in == 0;
+        rst_n  == 1;
         ena inside {0,1};
       })
-      else `uvm_error(get_type_name(),"Randomization failed")
+        `uvm_fatal(get_type_name(),"Randomization failed")
+
       finish_item(req);
+
     end
 
     read_result();
+
   endtask
 
 endclass
@@ -553,11 +604,11 @@ class random_test_seq extends systolic_base_seq;
   endfunction
 
   task body();
+
     repeat(500) begin
-      for(int i=0;i<16;i++) begin
-        A[i]=$urandom_range(0,15);
-        B[i]=$urandom_range(0,15);
-      end
+
+      // Randomize matrix A and B using seq_item
+      randomize_matrices();
 
       load_A();
       load_B();
@@ -568,11 +619,12 @@ class random_test_seq extends systolic_base_seq;
         drive(0,0);
 
       read_result();
+
     end
+
   endtask
 
 endclass
-
 
 
 class priority_seq extends systolic_base_seq;
