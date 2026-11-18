@@ -232,7 +232,7 @@ class ena_check_seq extends systolic_base_seq;
       ui_in  == 0;
       uio_in == 8'h04;
       rst_n  == 1;
-      ena    == 0;
+      ena    == 1;
     })
       `uvm_fatal(get_type_name(),"Randomization failed")
 
