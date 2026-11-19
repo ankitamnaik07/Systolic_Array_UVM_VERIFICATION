@@ -26,7 +26,7 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     end
   endtask
 
-  task load_rand_a(int cycles = 16);
+  task load_a(int cycles = 16);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
@@ -36,7 +36,7 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     idle_cycles(1);
   endtask
 
-  task load_rand_b(int cycles = 16);
+  task load_b(int cycles = 16);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
@@ -88,7 +88,7 @@ class reset_abort_seq extends systolic_base_seq;
 
   task body();
     apply_reset(2);
-    load_rand_a(8);
+    load_a(8);
     apply_reset(2);
     start_and_wait_done();
     read_results(32);
@@ -131,8 +131,8 @@ class matrix_load_seq extends systolic_base_seq;
 
   task body();
     apply_reset(2);
-    load_rand_a(16);
-    load_rand_b(16);
+    load_a(16);
+    load_b(16);
     start_and_wait_done();
     read_results(32);
   endtask
@@ -147,12 +147,12 @@ class done_load_seq extends systolic_base_seq;
 
   task body();
     apply_reset(2);
-    load_rand_a(16);
-    load_rand_b(16);
+    load_a(16);
+    load_b(16);
     start_and_wait_done();
     read_results(32);
-    load_rand_a(16);
-    load_rand_b(16);
+    load_a(16);
+    load_b(16);
     start_and_wait_done();
     read_results(32);
   endtask
@@ -167,14 +167,14 @@ class matrix_reload_seq extends systolic_base_seq;
 
   task body();
     apply_reset(2);
-    load_rand_a(16);
-    load_rand_b(16);
+    load_a(16);
+    load_b(16);
     start_and_wait_done();
     read_results(32);
-    load_rand_a(16);
+    load_a(16);
     start_and_wait_done();
     read_results(32);
-    load_rand_b(16);
+    load_b(16);
     start_and_wait_done();
     read_results(32);
   endtask
@@ -272,8 +272,8 @@ class read_wrap_seq extends systolic_base_seq;
 
   task body();
     apply_reset(2);
-    load_rand_a(16);
-    load_rand_b(16);
+    load_a(16);
+    load_b(16);
     start_and_wait_done();
     read_results(16);
     idle_cycles(4);
@@ -290,8 +290,8 @@ class data_retain_seq extends systolic_base_seq;
 
   task body();
     apply_reset(2);
-    load_rand_a(16);
-    load_rand_b(16);
+    load_a(16);
+    load_b(16);
     start_and_wait_done();
     idle_cycles(20);
     read_results(32);
@@ -308,8 +308,8 @@ class random_test_seq extends systolic_base_seq;
   task body();
     apply_reset(2);
     repeat(5) begin
-      load_rand_a(16);
-      load_rand_b(16);
+      load_a(16);
+      load_b(16);
       start_and_wait_done();
       read_results(32);
     end
@@ -355,8 +355,8 @@ class wb_start_seq extends systolic_base_seq;
   task body();
     req = seq_item::type_id::create("req");
     apply_reset(2);
-    load_rand_a(16);
-    load_rand_b(16);
+    load_a(16);
+    load_b(16);
     // Assert start
     start_item(req);
     assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h04; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
@@ -383,8 +383,8 @@ class invalid_req_seq extends systolic_base_seq;
     apply_reset(2);
     // Try READ in IDLE (should be ignored)
     read_results(4);
-    load_rand_a(16);
-    load_rand_b(16);
+    load_a(16);
+    load_b(16);
     start_and_wait_done();
     read_results(32);
   endtask
@@ -399,8 +399,8 @@ class load_length_seq extends systolic_base_seq;
 
   task body();
     apply_reset(2);
-    load_rand_a(20);
-    load_rand_b(16);
+    load_a(20);
+    load_b(16);
     start_and_wait_done();
     read_results(32);
   endtask
@@ -416,8 +416,8 @@ class back2back_seq extends systolic_base_seq;
   task body();
     apply_reset(2);
     repeat(2) begin
-      load_rand_a(16);
-      load_rand_b(16);
+      load_a(16);
+      load_b(16);
       start_and_wait_done();
       read_results(32);
     end
@@ -460,8 +460,8 @@ class read_retain_seq extends systolic_base_seq;
 
   task body();
     apply_reset(2);
-    load_rand_a(16);
-    load_rand_b(16);
+    load_a(16);
+    load_b(16);
     start_and_wait_done();
     read_results(32);
     idle_cycles(10);
