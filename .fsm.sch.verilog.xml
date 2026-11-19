@@ -1,8 +1,0 @@
-<Command name="schRTLInfo"  delimiter="."  >
-<RTLBlock >
-<RTLInfo   name="STATE_0"  type="2"  fileName="systolic_array.v"  >
-    <Seg beginLine="156"  endLine="209"  />
-  </RTLInfo>
-<Instance name="tb_top.dut.U_MM"  />
-</RTLBlock>
-</Command>

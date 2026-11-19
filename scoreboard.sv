@@ -48,7 +48,7 @@ class scoreboard extends uvm_scoreboard;
     prev_load_b = 0;
   endfunction
 
-  function void print_input_matrices();
+/*  function void print_input_matrices();
     `uvm_info("MATRIX", "========== INPUT MATRIX A ==========", UVM_LOW)
     for(int i = 0; i < 4; i++) begin
       `uvm_info("MATRIX",
@@ -71,7 +71,7 @@ class scoreboard extends uvm_scoreboard;
         UVM_LOW)
     end
   endfunction
-
+*/
   function void calculate_expected();
     int unsigned sum;
 
@@ -150,7 +150,7 @@ class scoreboard extends uvm_scoreboard;
       end
       else if(t.rst_n === 1'b1) begin
         if(t.uio_in[2] && !prev_start && !t.uio_out[4] && !t.uio_in[0] && !t.uio_in[1]) begin
-          print_input_matrices();
+//          print_input_matrices();
           calculate_expected();
           read_idx = 0;
     //      in_read = 0;

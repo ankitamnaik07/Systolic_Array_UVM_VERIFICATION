@@ -74,6 +74,8 @@ class reset_idle_seq extends systolic_base_seq;
 
   task body();
     apply_reset(3);
+	  load_a(16);
+	  load_b(16);
     start_and_wait_done();
     read_results(32);
   endtask
@@ -121,7 +123,9 @@ class matrix_load_seq extends systolic_base_seq;
   task body();
     apply_reset(2);
     load_a(16);
+	  idle_cycles(1);
     load_b(16);
+	  idle_cycles(1);
     start_and_wait_done();
     read_results(32);
   endtask
