@@ -7,3 +7,6 @@ vc_hdrs.h
 *.xml
 simv.vdb/
 simv.cst/
+verdi_config_file
+single_runs/
+regression_cm/

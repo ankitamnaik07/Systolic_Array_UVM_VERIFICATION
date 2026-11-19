@@ -1,7 +1,0 @@
-tb_top.dut.U_MM.S_COMPUTE3
-tb_top.dut.U_MM.S_DONE5
-tb_top.dut.U_MM.S_IDLE0
-tb_top.dut.U_MM.S_LOAD_A1
-tb_top.dut.U_MM.S_LOAD_B2
-tb_top.dut.U_MM.S_READ6
-tb_top.dut.U_MM.S_WB4
