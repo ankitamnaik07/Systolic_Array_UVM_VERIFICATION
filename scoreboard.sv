@@ -9,7 +9,7 @@ class scoreboard extends uvm_scoreboard;
 
   bit [10:0] exp_arr[0:15];
 
-  bit in_read;
+//  bit in_read;
   bit prev_start;
   bit prev_load_a;
   bit prev_load_b;
@@ -42,7 +42,7 @@ class scoreboard extends uvm_scoreboard;
     load_b_idx = 0;
     read_idx = 0;
 
-    in_read = 0;
+  //  in_read = 0;
     prev_start = 0;
     prev_load_a = 0;
     prev_load_b = 0;
@@ -153,37 +153,37 @@ class scoreboard extends uvm_scoreboard;
           print_input_matrices();
           calculate_expected();
           read_idx = 0;
-          in_read = 0;
+    //      in_read = 0;
         end
 
-        if(t.uio_out[4]) begin
-        end
+    //    if(t.uio_out[4]) begin
+    //    end
         else if(t.uio_in[0]) begin
           if(!prev_load_a)
             load_a_idx = 0;
           arr_a[load_a_idx % 16] = t.ui_in[3:0];
           load_a_idx++;
-          in_read = 0;
+          //in_read = 0;
         end
         else if(t.uio_in[1]) begin
           if(!prev_load_b)
             load_b_idx = 0;
           arr_b[load_b_idx % 16] = t.ui_in[3:0];
           load_b_idx++;
+          //in_read = 0;
+        end
+      /*  else if(t.uio_in[2]) begin
           in_read = 0;
         end
-        else if(t.uio_in[2]) begin
-          in_read = 0;
-        end
-        else if(t.uio_in[3]) begin
+       */ else if(t.uio_in[3]) begin
           if(t.uio_out[5]) begin
-            in_read = 1;
+           // in_read = 1;
             compare_byte();
           end
         end
-        else begin
+       /* else begin
           in_read = 0;
-        end
+        end*/
       end
       else begin
         `uvm_error("SCB", "rst_n is X or Z")

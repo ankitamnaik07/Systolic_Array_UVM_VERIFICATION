@@ -9,11 +9,11 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b0; ena == 1'b1; uio_in == 8'h00; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b0;uio_in == 8'h00; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     start_item(req);
-    assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h00; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+    assert(req.randomize() with {rst_n == 1'b1;uio_in == 8'h00; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
     finish_item(req);
   endtask
 
@@ -21,7 +21,7 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h00; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b1;uio_in == 8'h00; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
   endtask
@@ -30,7 +30,7 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h01; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b1;uio_in == 8'h01; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);
@@ -40,7 +40,7 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h02; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b1; uio_in == 8'h02; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);
@@ -49,7 +49,7 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
   task start_and_wait_done();
     req = seq_item::type_id::create("req");
     start_item(req);
-    assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h04; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+    assert(req.randomize() with {rst_n == 1'b1;uio_in == 8'h04; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
     finish_item(req);
     idle_cycles(32);
   endtask
@@ -58,7 +58,7 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h08; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b1;  uio_in == 8'h08; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);
@@ -103,22 +103,11 @@ class ena_check_seq extends systolic_base_seq;
   endfunction
 
   task body();
-    req = seq_item::type_id::create("req");
-    apply_reset(2);
-    repeat(16) begin
-      start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; uio_in == 8'h01; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
-      finish_item(req);
-    end
-    idle_cycles(1);
-    repeat(16) begin
-      start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; uio_in == 8'h02; ui_in[7:4] == 4'h0;}) else `uvm_error(get_type_name(), "rand failed");
-      finish_item(req);
-    end
-    idle_cycles(1);
+   apply_reset(2);
+    load_a(16);
+    load_b(16);
     start_and_wait_done();
-    read_results(32);
+    read_results(32); 
   endtask
 endclass
 
@@ -150,7 +139,7 @@ class done_load_seq extends systolic_base_seq;
     load_a(16);
     load_b(16);
     start_and_wait_done();
-    read_results(32);
+    //read_results(32);
     load_a(16);
     load_b(16);
     start_and_wait_done();

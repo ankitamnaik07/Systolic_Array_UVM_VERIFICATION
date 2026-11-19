@@ -13,6 +13,9 @@ class seq_item extends uvm_sequence_item;
   bit [7:0] uio_out;
   bit [7:0] uio_oe;
 
+  constraint c1{ ui_in inside {[0:15]};
+  }
+	
 
   function new(string name = "seq_item");
     super.new(name);

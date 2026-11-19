@@ -1,0 +1,6 @@
+regression_cm/runs/reset_idle_test_run1/simv.vdb
+regression_cm/runs/reset_idle_test_run2/simv.vdb
+regression_cm/runs/reset_idle_test_run3/simv.vdb
+regression_cm/runs/reset_idle_test_run4/simv.vdb
+regression_cm/runs/reset_idle_test_run5/simv.vdb
+regression_cm/runs/reset_abort_test_run1/simv.vdb

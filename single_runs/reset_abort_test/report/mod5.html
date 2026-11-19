@@ -1,0 +1,2381 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="Author" content="<username>"> <meta name="GENERATOR" content="urg/version [en] (platform name) [urg]">
+<title>Unified Coverage Report :: Module :: systolic_array</title>
+<link type="text/css" rel="stylesheet" href="css/.urg.css">
+<link type="text/css" rel="stylesheet" href="css/.layout.css">
+<link type="text/css" rel="stylesheet" href="css/.breadcrumb.css">
+<script type="text/javascript" src="js/.jquery.js"></script>
+<script type="text/javascript" src="js/.jquery-ui.js"></script>
+<script type="text/javascript" src="js/.sortable.js"></script>
+<script type="text/javascript" src="js/.layout.js"></script>
+<script type="text/javascript" src="js/.breadcrumb.js"></script>
+<script type="text/javascript">
+var layout, westLayout, centerLayout;
+$(document).ready(function () {
+  if ($("#north-bread-crumb")) {
+    $("#north-bread-crumb").jBreadCrumb({easing:'swing'})
+  }
+  layout = $("body").layout({ 
+    resizable: true,
+    spacing_open: 4,
+    spacing_closed: 4,
+    north: {
+      size: 76
+    },
+    south: {
+      size: 45,
+      initClosed: true
+    },
+    west: {
+      size: 500,
+      resizable: true,
+      initClosed: false
+    }
+  });
+  centerLayout = $('div.ui-layout-center').layout({
+    north__paneSelector: ".ui-layout-center-inner-north",
+    center__paneSelector: ".ui-layout-center-inner-center", 
+    north__size: 50,
+    spacing_open: 4,
+    spacing_closed: 4
+  });
+});
+</script>
+</head>
+<body onLoad="initPage();"><div class="ui-layout-north">
+<div class="logo"></div>
+<center class="pagetitle">Module Definition</center>
+<div align="center"><a href="dashboard.html" ><b>dashboard</b></a> | <a href="hierarchy.html" ><b>hierarchy</b></a> | <a href="modlist.html" ><b>modlist</b></a> | <a href="groups.html" ><b>groups</b></a> | <a href="tests.html" ><b>tests</b></a> | <a href="asserts.html" ><b>asserts</b></a></div>
+
+</div>
+<div class="ui-layout-west">
+<div name='tag_systolic_array'>
+<div class=modhdr>
+<br clear=all>
+<span class=titlename>Module : <a href="#"  onclick="showContent('tag_systolic_array')">systolic_array</a></span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td></tr><tr>
+<td class="s6 cl rt"> 65.51</td>
+<td class="s8 cl rt"><a href="mod5.html#Line" > 84.21</a></td>
+<td class="s10 cl rt"><a href="mod5.html#Cond" >100.00</a></td>
+<td class="s2 cl rt"><a href="mod5.html#Toggle" > 23.11</a></td>
+<td class="s4 cl rt"><a href="mod5.html#FSM" > 41.18</a></td>
+<td class="s7 cl rt"><a href="mod5.html#Branch" > 79.03</a></td>
+<td class="wht cl rt"></td>
+</tr></table><br clear=all>
+<span class=repname>Source File(s) : </span>
+<br clear=all>
+<a href="javascript:void(0);"  onclick="openSrcFile('/fetools/work_area/frontend/Batch_11/ankita/systolic_array/Systolic_Array_UVM_VERIFICATION/systolic_array.v')">/fetools/work_area/frontend/Batch_11/ankita/systolic_array/Systolic_Array_UVM_VERIFICATION/systolic_array.v</a><br clear=all>
+<br clear=all>
+<span class=repname>Module self-instances :</span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">NAME</td><td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td></tr><tr>
+<td class="wht cl wordwrap"><a href="mod5.html#inst_tag_8"  onclick="showContent('inst_tag_8')">tb_top.dut.U_MM</a></td>
+<td class="s6 cl rt"> 65.51</td>
+<td class="s8 cl rt"><a href="mod5.html#Line" > 84.21</a></td>
+<td class="s10 cl rt"><a href="mod5.html#Cond" >100.00</a></td>
+<td class="s2 cl rt"><a href="mod5.html#Toggle" > 23.11</a></td>
+<td class="s4 cl rt"><a href="mod5.html#FSM" > 41.18</a></td>
+<td class="s7 cl rt"><a href="mod5.html#Branch" > 79.03</a></td>
+<td class="wht cl rt"></td>
+</tr></table></div>
+</div>
+<br clear=all>
+<div name='tag_systolic_array'>
+<hr>
+<a name="inst_tag_8"></a>
+<div class=modhdr>
+<br clear=all>
+<span class=titlename>Module Instance : <a href="hierarchy.html#tag_urg_inst_8" >tb_top.dut.U_MM</a></span>
+<br clear=all>
+<br clear=all>
+<span class=repname>Instance :</span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td></tr><tr>
+<td class="s6 cl rt"> 65.51</td>
+<td class="s8 cl rt"><a href="mod5.html#Line" > 84.21</a></td>
+<td class="s10 cl rt"><a href="mod5.html#Cond" >100.00</a></td>
+<td class="s2 cl rt"><a href="mod5.html#Toggle" > 23.11</a></td>
+<td class="s4 cl rt"><a href="mod5.html#FSM" > 41.18</a></td>
+<td class="s7 cl rt"><a href="mod5.html#Branch" > 79.03</a></td>
+<td class="wht cl rt"></td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Instance's subtree :</span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td></tr><tr>
+<td class="s6 cl rt"> 66.08</td>
+<td class="s9 cl rt"> 90.32</td>
+<td class="s10 cl rt">100.00</td>
+<td class="s1 cl rt"> 15.55</td>
+<td class="s4 cl rt"> 41.18</td>
+<td class="s8 cl rt"> 83.33</td>
+<td class="wht cl rt"></td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Parent : </span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td><td class="alfsrt">NAME</td></tr><tr>
+<td class="s2 cl rt"> 25.00</td>
+<td class="wht cl rt"></td>
+<td class="wht cl rt"></td>
+<td class="s2 cl rt"> 25.00</td>
+<td class="wht cl rt"></td>
+<td class="wht cl rt"></td>
+<td class="wht cl rt"></td>
+<td><a href="mod0.html#inst_tag_0" >dut</a></td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Subtrees :</span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">NAME</td><td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td></tr><tr>
+<td class="wht cl wordwrap"><a href="mod3.html#inst_tag_3" id="tag_urg_inst_3">PE_ROW[0].PE_COL[0].U_PE</a></td>
+<td class="s6 cl rt"> 69.19</td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+<td class="s0 cl rt">  7.58</td>
+<td class="wht cl rt"></td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+</tr><tr>
+<td class="wht cl wordwrap"><a href="mod3.html#inst_tag_4" id="tag_urg_inst_4">PE_ROW[0].PE_COL[1].U_PE</a></td>
+<td class="s6 cl rt"> 68.69</td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+<td class="s0 cl rt">  6.06</td>
+<td class="wht cl rt"></td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+</tr><tr>
+<td class="wht cl wordwrap"><a href="mod3.html#inst_tag_5" id="tag_urg_inst_5">PE_ROW[1].PE_COL[0].U_PE</a></td>
+<td class="s6 cl rt"> 68.69</td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+<td class="s0 cl rt">  6.06</td>
+<td class="wht cl rt"></td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+</tr><tr>
+<td class="wht cl wordwrap"><a href="mod3.html#inst_tag_6" id="tag_urg_inst_6">PE_ROW[1].PE_COL[1].U_PE</a></td>
+<td class="s6 cl rt"> 68.69</td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+<td class="s0 cl rt">  6.06</td>
+<td class="wht cl rt"></td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+</tr></table><br clear=all>
+</div>
+</div>
+<hr>
+Since this is the module's only instance, the coverage report is the same as for the module.</div>
+<div class="ui-layout-center">
+<div class="ui-layout-center-inner-center">
+<div name='tag_systolic_array'>
+<a name="Line"></a>
+Line Coverage for Module : <a href="mod5.html" >systolic_array</a><br clear=all>
+<table class="noborder">
+<col width="122">
+<col span="4" width="82">
+<tr><th></th><th>Line No.</th><th>Total</th><th>Covered</th><th>Percent</th></tr>
+<tr class="s8"><td class="lf">TOTAL</td><td></td><td>76</td><td>64</td><td>84.21</td></tr>
+<tr class="s6"><td class="lf">ALWAYS</td><td>153</td><td>28</td><td>19</td><td>67.86</td></tr>
+<tr class="s9"><td class="lf">ALWAYS</td><td>208</td><td>41</td><td>38</td><td>92.68</td></tr>
+<tr class="s10"><td class="lf">ALWAYS</td><td>378</td><td>7</td><td>7</td><td>100.00</td></tr>
+</table>
+<pre class="code"><br clear=all>
+152                       always @(*) begin
+153        1/1              NEXT_STATE = STATE;
+154        1/1              case (STATE)
+155                           S_IDLE: begin
+156        2/2                  if      (LOAD_A) NEXT_STATE = S_LOAD_A;
+157        <font color = "red">1/2     ==>          else if (LOAD_B) NEXT_STATE = S_LOAD_B;</font>
+158        2/2                  else if (START)  NEXT_STATE = S_COMPUTE;
+                        MISSING_ELSE
+159                           end
+160                           S_LOAD_A: begin
+161        <font color = "red">1/2     ==>          if (!LOAD_A) NEXT_STATE = S_IDLE;</font>
+                        MISSING_ELSE
+162                           end
+163                           S_LOAD_B: begin
+164        <font color = "red">0/2     ==>          if (!LOAD_B) NEXT_STATE = S_IDLE;</font>
+                   <font color = "red">==>  MISSING_ELSE</font>
+165                           end
+166                           S_COMPUTE: begin
+167        2/2                  if (T_CNT == T_LAST) NEXT_STATE = S_WB;
+                        MISSING_ELSE
+168                           end
+169                           S_WB: begin
+170                             // one cycle to copy the block out, then either the next pass or done
+171        2/2                  if (LAST_PASS) NEXT_STATE = S_DONE;
+172        1/1                  else           NEXT_STATE = S_COMPUTE;
+173                           end
+174                           S_DONE: begin
+175        <font color = "red">1/2     ==>          if      (LOAD_A) NEXT_STATE = S_LOAD_A;</font>
+176        <font color = "red">1/2     ==>          else if (LOAD_B) NEXT_STATE = S_LOAD_B;</font>
+177        <font color = "red">1/2     ==>          else if (START)  NEXT_STATE = S_COMPUTE;</font>
+178        2/2                  else if (READ)   NEXT_STATE = S_READ;
+                        MISSING_ELSE
+179                           end
+180                           S_READ: begin
+181        <font color = "red">1/2     ==>          if (!READ) NEXT_STATE = S_DONE;</font>
+                        MISSING_ELSE
+182                           end
+183        <font color = "red">0/1     ==>        default: NEXT_STATE = S_IDLE;</font>
+184                         endcase
+185                       end
+186                     
+187                       // A write happens on every edge at which the machine is in (or entering) the
+188                       // matching load state.  Using NEXT_STATE means the first byte of a burst --
+189                       // presented in the same cycle LOAD_A first goes high -- is captured, so an
+190                       // MNN-cycle burst transfers exactly MNN operands.
+191                       assign WR_A      = (NEXT_STATE == S_LOAD_A);
+192                       assign WR_B      = (NEXT_STATE == S_LOAD_B);
+193                     
+194                       // Clear pulse before the first step of *every* pass, including the first.
+195                       assign CLR_ACC   = (NEXT_STATE == S_COMPUTE) &amp;&amp; (STATE != S_COMPUTE);
+196                       assign EN_MAC    = (STATE == S_COMPUTE);
+197                       assign WB_NOW    = (STATE == S_WB);
+198                     
+199                       // True only when a whole new computation begins, not between passes.
+200                       assign START_RUN = (NEXT_STATE == S_COMPUTE) &amp;&amp;
+201                                          ((STATE == S_IDLE) || (STATE == S_DONE));
+202                     
+203                       assign BUSY      = (STATE == S_COMPUTE) || (STATE == S_WB);
+204                       assign DONE      = (STATE == S_DONE) || (STATE == S_READ);
+205                     
+206                       // Sequential control / storage.  Nonblocking assignments only.
+207                       always @(posedge CLK or negedge RESET_N) begin
+208        1/1              if (!RESET_N) begin
+209        1/1                STATE  &lt;= S_IDLE;
+210        1/1                A_PTR  &lt;= {PTRW{1'b0}};
+211        1/1                B_PTR  &lt;= {PTRW{1'b0}};
+212        1/1                T_CNT  &lt;= {TW{1'b0}};
+213        1/1                PASS_I &lt;= {BW{1'b0}};
+214        1/1                PASS_J &lt;= {BW{1'b0}};
+215        1/1                RD_PTR &lt;= {RDW{1'b0}};
+216        1/1                for (I = 0; I &lt; MNN; I = I + 1) begin
+217        1/1                  A_MEM[I] &lt;= {DW{1'b0}};
+218        1/1                  B_MEM[I] &lt;= {DW{1'b0}};
+219                           end
+220                         end
+221                         else begin
+222        1/1                STATE &lt;= NEXT_STATE;
+223                     
+224                           // ---- A load pointer and store ----
+225        2/2                if (!LOAD_A)   A_PTR &lt;= {PTRW{1'b0}};   // pointer rearms between bursts
+226        2/2                else if (WR_A) A_PTR &lt;= A_PTR + 1'b1;
+                   <font color = "red">==>  MISSING_ELSE</font>
+227                     
+228        2/2                if (WR_A) A_MEM[A_PTR] &lt;= DATA_IN[DW-1:0];
+                        MISSING_ELSE
+229                     
+230                           // ---- B load pointer and store ----
+231        2/2                if (!LOAD_B)   B_PTR &lt;= {PTRW{1'b0}};
+232        <font color = "red">0/2     ==>        else if (WR_B) B_PTR &lt;= B_PTR + 1'b1;</font>
+                   <font color = "red">==>  MISSING_ELSE</font>
+233                     
+234        <font color = "red">1/2     ==>        if (WR_B) B_MEM[B_PTR] &lt;= DATA_IN[DW-1:0];</font>
+                        MISSING_ELSE
+235                     
+236                           // ---- systolic step counter, restarted for every pass ----
+237        2/2                if (CLR_ACC)                 T_CNT &lt;= {TW{1'b0}};
+238        2/2                else if (STATE == S_COMPUTE) T_CNT &lt;= T_CNT + 1'b1;
+                        MISSING_ELSE
+239                     
+240                           // ---- pass counters: zeroed per computation, advanced per writeback ----
+241        1/1                if (START_RUN) begin
+242        1/1                  PASS_I &lt;= {BW{1'b0}};
+243        1/1                  PASS_J &lt;= {BW{1'b0}};
+244                           end
+245        1/1                else if (WB_NOW) begin
+246        1/1                  if (PASS_J == (BLK - 1)) begin
+247        1/1                    PASS_J &lt;= {BW{1'b0}};
+248        2/2                    if (PASS_I != (BLK - 1)) PASS_I &lt;= PASS_I + 1'b1;
+                        MISSING_ELSE
+249                             end
+250                             else begin
+251        1/1                    PASS_J &lt;= PASS_J + 1'b1;
+252                             end
+253                           end
+                        MISSING_ELSE
+254                     
+255                           // ---- readout pointer ----
+256                           // The wrap is explicit rather than relying on the counter overflowing,
+257                           // because MNN*OBYTES is only a power of two when MN is.  Without this the
+258                           // pointer would run past the last element for e.g. MN = 3.
+259        1/1                if (START_RUN)
+260        1/1                  RD_PTR &lt;= {RDW{1'b0}};
+261        1/1                else if (NEXT_STATE == S_READ)
+262        1/1                  RD_PTR &lt;= (RD_PTR == (MNN*OBYTES - 1)) ? {RDW{1'b0}} : RD_PTR + 1'b1;
+                        MISSING_ELSE
+263                         end
+264                       end
+265                     
+266                       // PE mesh interconnect.
+267                       //
+268                       // Flat 1-D net arrays are used instead of multidimensional arrays so that
+269                       // the netlist is legal in the most conservative Verilog dialect.
+270                       //   AH[(PN+1)*i + j] = A entering PE(i,j);  j = PN is the row's spill.
+271                       //   BV[PN*i + j]     = B entering PE(i,j);  i = PN is the column's spill.
+272                       //
+273                       // The spill nets are intentionally left unread: the A forwarding register of
+274                       // the last column and the B forwarding register of the last row drive
+275                       // nothing, so synthesis removes them (2*PN*DW flops).  Keeping the mesh
+276                       // uniform is worth more than special-casing the boundary.
+277                       wire [DW-1:0]       AH [0:PN*(PN+1)-1];
+278                       wire [DW-1:0]       BV [0:PN*(PN+1)-1];
+279                       wire [PNN*ACCW-1:0] ACC_BUS;
+280                     
+281                       genvar GI, GJ, GK, GB;
+282                     
+283                       generate
+284                         // Skewed A injection on the left edge.
+285                         // Row i of the active block needs A[PN*PASS_I + i][T-i].  The candidates
+286                         // are BLK rows (one per row block) times MN values of k, packed at bus
+287                         // index (block*MN + k), so the select is {PASS_I, KA}.  KA wraps to a
+288                         // value &gt;= MN when T &lt; i, which selects the zero default.
+289                         for (GI = 0; GI &lt; PN; GI = GI + 1) begin : A_INJECT
+290                           wire [BLK*MN*DW-1:0] ABUS;
+291                           wire [TW-1:0]        KA;
+292                           wire [SELW-1:0]      ASEL;
+293                     
+294                           for (GB = 0; GB &lt; BLK; GB = GB + 1) begin : BLOCK
+295                             for (GK = 0; GK &lt; MN; GK = GK + 1) begin : PACK
+296                               assign ABUS[(GB*MN + GK)*DW +: DW] = A_MEM[MN*(PN*GB + GI) + GK];
+297                             end
+298                           end
+299                     
+300                           assign KA   = T_CNT - GI;
+301                           assign ASEL = (KA &lt; MN) ? (PASS_I*MN + KA) : {SELW{1'b0}};
+302                           assign AH[(PN+1)*GI] = (KA &lt; MN) ? ABUS[ASEL*DW +: DW] : {DW{1'b0}};
+303                         end
+304                     
+305                         // Skewed B injection on the top edge.
+306                         // Column j of the active block needs B[T-j][PN*PASS_J + j].  Candidates
+307                         // are BLK columns times MN values of k, packed at (block*MN + k).
+308                         for (GJ = 0; GJ &lt; PN; GJ = GJ + 1) begin : B_INJECT
+309                           wire [BLK*MN*DW-1:0] BBUS;
+310                           wire [TW-1:0]        KB;
+311                           wire [SELW-1:0]      BSEL;
+312                     
+313                           for (GB = 0; GB &lt; BLK; GB = GB + 1) begin : BLOCK
+314                             for (GK = 0; GK &lt; MN; GK = GK + 1) begin : PACK
+315                               assign BBUS[(GB*MN + GK)*DW +: DW] = B_MEM[MN*GK + PN*GB + GJ];
+316                             end
+317                           end
+318                     
+319                           assign KB   = T_CNT - GJ;
+320                           assign BSEL = (KB &lt; MN) ? (PASS_J*MN + KB) : {SELW{1'b0}};
+321                           assign BV[GJ] = (KB &lt; MN) ? BBUS[BSEL*DW +: DW] : {DW{1'b0}};
+322                         end
+323                     
+324                         // The PN*PN processing elements.
+325                         for (GI = 0; GI &lt; PN; GI = GI + 1) begin : PE_ROW
+326                           for (GJ = 0; GJ &lt; PN; GJ = GJ + 1) begin : PE_COL
+327                             wire [ACCW-1:0] ACC_LOCAL;
+328                     
+329                             PE #(
+330                               .DW      (DW),
+331                               .ACCW    (ACCW)
+332                             ) U_PE (
+333                               .CLK     (CLK),
+334                               .RESET_N (RESET_N),
+335                               .CLR     (CLR_ACC),
+336                               .EN      (EN_MAC),
+337                               .A_IN    (AH[(PN+1)*GI + GJ]),
+338                               .B_IN    (BV[PN*GI + GJ]),
+339                               .A_OUT   (AH[(PN+1)*GI + GJ + 1]),
+340                               .B_OUT   (BV[PN*(GI+1) + GJ]),
+341                               .ACC_OUT (ACC_LOCAL)
+342                             );
+343                     
+344                             // Flatten the accumulators into one bus for writeback and readout.
+345                             assign ACC_BUS[(PN*GI + GJ)*ACCW +: ACCW] = ACC_LOCAL;
+346                           end
+347                         end
+348                       endgenerate
+349                     
+350                       // Result storage and readout source.
+351                       //
+352                       // When PN &lt; MN the PN*PN accumulators hold only one block at a time, so each
+353                       // pass is copied into CBUF during S_WB.  The copy reads the accumulators
+354                       // through ACC_BUS on the same edge that CLR_ACC zeroes them; nonblocking
+355                       // assignment means the old value is captured, which is what is wanted.
+356                       //
+357                       // When PN == MN there is one pass and the accumulators are the result, so the
+358                       // buffer and its write decoder are omitted entirely.
+359                       wire [PTRW-1:0]   RD_ELEM;
+360                       wire [BSEL_W-1:0] RD_BYTE;
+361                       wire [ACCW-1:0]   C_RD;
+362                       wire [OW-1:0]     ACC_PAD;
+363                     
+364                       assign RD_ELEM = RD_PTR[RDW-1:BSEL_W];
+365                       assign RD_BYTE = RD_PTR[BSEL_W-1:0];
+366                     
+367                       generate
+368                         if (NPASS &gt; 1) begin : C_BUFFERED
+369                           reg [ACCW-1:0] CBUF [0:MNN-1];
+370                           // Loop indices are local to this always block.  Sharing the module-level
+371                           // integers with the control block would make two clocked processes
+372                           // mutate the same variable on the same edge.
+373                           integer        CI;
+374                           integer        WI;
+375                           integer        WJ;
+376                     
+377                           always @(posedge CLK or negedge RESET_N) begin
+378        1/1                  if (!RESET_N) begin
+379        1/1                    for (CI = 0; CI &lt; MNN; CI = CI + 1)
+380        1/1                      CBUF[CI] &lt;= {ACCW{1'b0}};
+381                             end
+382        1/1                  else if (WB_NOW) begin
+383        1/1                    for (WI = 0; WI &lt; PN; WI = WI + 1)
+384        1/1                      for (WJ = 0; WJ &lt; PN; WJ = WJ + 1)
+385        1/1                        CBUF[MN*(PN*PASS_I + WI) + PN*PASS_J + WJ]
+386                                     &lt;= ACC_BUS[(PN*WI + WJ)*ACCW +: ACCW];
+387                             end
+                        MISSING_ELSE
+</pre>
+<hr>
+<a name="Cond"></a>
+Cond Coverage for Module : <a href="mod5.html" >systolic_array</a><br clear=all>
+<table class="noborder">
+<col width="122">
+<col span="3" width="82">
+<tr><th></th><th>Total</th><th>Covered</th><th>Percent</th></tr>
+<tr class="s10"><td class="lf">Conditions</td><td>36</td><td>36</td><td>100.00</td></tr>
+<tr class="s10"><td class="lf">Logical</td><td>36</td><td>36</td><td>100.00</td></tr>
+<tr class="wht"><td class="lf">Non-Logical</td><td>0</td><td>0</td><td></td></tr>
+<tr class="wht"><td class="lf">Event</td><td>0</td><td>0</td><td></td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       150
+ EXPRESSION ((PASS_I == (BLK - 1)) &amp;&amp; (PASS_J == (BLK - 1)))
+             ----------1----------    ----------2----------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       195
+ EXPRESSION ((NEXT_STATE == S_COMPUTE) &amp;&amp; (STATE != S_COMPUTE))
+             ------------1------------    ----------2---------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       200
+ EXPRESSION ((NEXT_STATE == S_COMPUTE) &amp;&amp; ((STATE == S_IDLE) || (STATE == S_DONE)))
+             ------------1------------    --------------------2-------------------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       200
+ SUB-EXPRESSION ((STATE == S_IDLE) || (STATE == S_DONE))
+                 --------1--------    --------2--------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       203
+ EXPRESSION ((STATE == S_COMPUTE) || (STATE == S_WB))
+             ----------1---------    -------2-------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       204
+ EXPRESSION ((STATE == S_DONE) || (STATE == S_READ))
+             --------1--------    --------2--------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       262
+ EXPRESSION ((RD_PTR == ((MNN * OBYTES) - 1)) ? ({RDW {1'b0}}) : ((RD_PTR + 1'b1)))
+             ----------------1---------------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       301
+ EXPRESSION ((A_INJECT[0].KA &lt; MN) ? (((PASS_I * MN) + A_INJECT[0].KA)) : ({SELW {1'b0}}))
+             ----------1----------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       301
+ EXPRESSION ((A_INJECT[1].KA &lt; MN) ? (((PASS_I * MN) + A_INJECT[1].KA)) : ({SELW {1'b0}}))
+             ----------1----------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       302
+ EXPRESSION ((A_INJECT[0].KA &lt; MN) ? A_INJECT[0].ABUS[(A_INJECT[0].ASEL * DW)+:DW] : ({DW {1'b0}}))
+             ----------1----------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       302
+ EXPRESSION ((A_INJECT[1].KA &lt; MN) ? A_INJECT[1].ABUS[(A_INJECT[1].ASEL * DW)+:DW] : ({DW {1'b0}}))
+             ----------1----------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       320
+ EXPRESSION ((B_INJECT[0].KB &lt; MN) ? (((PASS_J * MN) + B_INJECT[0].KB)) : ({SELW {1'b0}}))
+             ----------1----------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       320
+ EXPRESSION ((B_INJECT[1].KB &lt; MN) ? (((PASS_J * MN) + B_INJECT[1].KB)) : ({SELW {1'b0}}))
+             ----------1----------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       321
+ EXPRESSION ((B_INJECT[0].KB &lt; MN) ? B_INJECT[0].BBUS[(B_INJECT[0].BSEL * DW)+:DW] : ({DW {1'b0}}))
+             ----------1----------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       321
+ EXPRESSION ((B_INJECT[1].KB &lt; MN) ? B_INJECT[1].BBUS[(B_INJECT[1].BSEL * DW)+:DW] : ({DW {1'b0}}))
+             ----------1----------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<hr>
+<a name="Toggle"></a>
+Toggle Coverage for Module : <a href="mod5.html" >systolic_array</a><br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=120></th><th nowrap width=80>Total</th><th nowrap width=80>Covered</th><th nowrap width=80>Percent</th></tr><tr class="s5">
+<td>Totals</td>
+<td class="rt">46</td>
+<td class="rt">24</td>
+<td class="rt">52.17 </td>
+</tr><tr class="s2">
+<td>Total Bits</td>
+<td class="rt">636</td>
+<td class="rt">147</td>
+<td class="rt">23.11 </td>
+</tr><tr class="s2">
+<td nowrap>Total Bits 0->1</td>
+<td class="rt">318</td>
+<td class="rt">76</td>
+<td class="rt">23.90 </td>
+</tr><tr class="s2">
+<td nowrap>Total Bits 1->0</td>
+<td class="rt">318</td>
+<td class="rt">71</td>
+<td class="rt">22.33 </td>
+</tr></table><br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=120></th><th nowrap width=80></th><th nowrap width=80></th><th nowrap width=80></th></tr><tr class="s5">
+<td>Ports</td>
+<td class="rt">10</td>
+<td class="rt">5</td>
+<td class="rt">50.00 </td>
+</tr><tr class="s4">
+<td>Port Bits</td>
+<td class="rt">48</td>
+<td class="rt">20</td>
+<td class="rt">41.67 </td>
+</tr><tr class="s4">
+<td nowrap>Port Bits 0->1</td>
+<td class="rt">24</td>
+<td class="rt">11</td>
+<td class="rt">45.83 </td>
+</tr><tr class="s3">
+<td nowrap>Port Bits 1->0</td>
+<td class="rt">24</td>
+<td class="rt">9</td>
+<td class="rt">37.50 </td>
+</tr></table><br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=120></th><th nowrap width=80></th><th nowrap width=80></th><th nowrap width=80></th></tr><tr class="s5">
+<td>Signals</td>
+<td class="rt">36</td>
+<td class="rt">19</td>
+<td class="rt">52.78 </td>
+</tr><tr class="s2">
+<td>Signal Bits</td>
+<td class="rt">588</td>
+<td class="rt">127</td>
+<td class="rt">21.60 </td>
+</tr><tr class="s2">
+<td nowrap>Signal Bits 0->1</td>
+<td class="rt">294</td>
+<td class="rt">65</td>
+<td class="rt">22.11 </td>
+</tr><tr class="s2">
+<td nowrap>Signal Bits 1->0</td>
+<td class="rt">294</td>
+<td class="rt">62</td>
+<td class="rt">21.09 </td>
+</tr></table><br clear=all>
+<table align=left class="sortable noborder">
+<caption><b>Port Details</b></caption>
+<tr class="sortablehead">
+<td class="alfsrt">Name</td><td class="alfsrt">Toggle</td><td class="alfsrt">Toggle 1->0</td><td class="alfsrt">Toggle 0->1</td><td class="alfsrt">Direction</td></tr><tr>
+<td>CLK</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>RESET_N</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>DATA_IN[3:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>DATA_IN[7:4]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td>INPUT</td>
+</tr><tr>
+<td>LOAD_A</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>LOAD_B</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td>INPUT</td>
+</tr><tr>
+<td>START</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>READ</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>DATA_OUT[7:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>BUSY</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>DONE</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr></table><br clear=all>
+<table align=left class="sortable noborder">
+<caption><b>Signal Details</b></caption>
+<tr class="sortablehead">
+<td class="alfsrt">Name</td><td class="alfsrt">Toggle</td><td class="alfsrt">Toggle 1->0</td><td class="alfsrt">Toggle 0->1</td></tr><tr>
+<td>STATE[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>NEXT_STATE[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_PTR[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_PTR[3]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>B_PTR[3:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>T_CNT[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>PASS_I</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>PASS_J</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>RD_PTR[3:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>RD_PTR[4]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>WR_A</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>WR_B</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>CLR_ACC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>EN_MAC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>WB_NOW</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>START_RUN</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>LAST_PASS</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>ACC_BUS[39:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>RD_ELEM[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>RD_ELEM[3]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>RD_BYTE</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>C_RD[9:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>ACC_PAD[15:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>A_INJECT[0].ABUS[1:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>A_INJECT[0].ABUS[2]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_INJECT[0].ABUS[3]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>A_INJECT[0].ABUS[5:4]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_INJECT[0].ABUS[7:6]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>A_INJECT[0].ABUS[8]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_INJECT[0].ABUS[10:9]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>A_INJECT[0].ABUS[12:11]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_INJECT[0].ABUS[31:13]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>A_INJECT[0].KA[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_INJECT[0].ASEL[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_INJECT[1].ABUS[2:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>A_INJECT[1].ABUS[4:3]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_INJECT[1].ABUS[5]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>A_INJECT[1].ABUS[6]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_INJECT[1].ABUS[7]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>A_INJECT[1].ABUS[9:8]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_INJECT[1].ABUS[31:10]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>A_INJECT[1].KA[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>A_INJECT[1].ASEL[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>B_INJECT[0].BBUS[31:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>B_INJECT[0].KB[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>B_INJECT[0].BSEL[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>B_INJECT[1].BBUS[31:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>B_INJECT[1].KB[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>B_INJECT[1].BSEL[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>PE_ROW[0].PE_COL[0].ACC_LOCAL[9:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>PE_ROW[0].PE_COL[1].ACC_LOCAL[9:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>PE_ROW[1].PE_COL[0].ACC_LOCAL[9:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>PE_ROW[1].PE_COL[1].ACC_LOCAL[9:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr></table><br clear=all>
+<hr>
+<a name="FSM"></a>
+FSM Coverage for Module : <a href="mod5.html" >systolic_array</a><br clear=all>
+<table align=left class="noborder">
+<caption><b>Summary for FSM :: STATE</b></caption>
+<tr>
+<th nowrap width=120></th><th nowrap width=80>Total</th><th nowrap width=80>Covered</th><th nowrap width=80>Percent</th><th nowrap width=200></th></tr><tr class="wht">
+<td>States</td>
+<td class="rt">7</td>
+<td class="rt">6</td>
+<td class="rt">85.71 </td>
+<td>(Not included in score)</td>
+</tr><tr class="s4">
+<td>Transitions</td>
+<td class="rt">17</td>
+<td class="rt">7</td>
+<td class="rt">41.18 </td>
+<td></td>
+</tr><tr class="wht">
+<td>Sequences</td>
+<td class="rt">0</td>
+<td class="rt">0</td>
+<td></td>
+<td></td>
+</tr></table><br clear=all>
+<b>State, Transition and Sequence Details for FSM :: STATE</b><hr>
+<table align=left class="sortable noborder">
+<tr class="sortablehead">
+<td class="alfsrt">states</td><td>Line No.</td><td class="alfsrt">Covered</td></tr><tr class="uGreen">
+<td nowrap>S_COMPUTE</td>
+<td class="rt">158</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_DONE</td>
+<td class="rt">171</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_IDLE</td>
+<td class="rt">209</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_LOAD_A</td>
+<td class="rt">156</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td nowrap>S_LOAD_B</td>
+<td class="rt">157</td>
+<td>Not&nbsp;Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_READ</td>
+<td class="rt">178</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_WB</td>
+<td class="rt">167</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<br clear=all>
+<table align=left class="sortable noborder">
+<tr class="sortablehead">
+<td class="alfsrt">transitions</td><td>Line No.</td><td class="alfsrt">Covered</td></tr><tr class="uRed">
+<td nowrap>S_COMPUTE->S_IDLE</td>
+<td class="rt">209</td>
+<td>Not&nbsp;Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_COMPUTE->S_WB</td>
+<td class="rt">167</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td nowrap>S_DONE->S_COMPUTE</td>
+<td class="rt">177</td>
+<td>Not&nbsp;Covered</td>
+</tr><tr class="uRed">
+<td nowrap>S_DONE->S_IDLE</td>
+<td class="rt">209</td>
+<td>Not&nbsp;Covered</td>
+</tr><tr class="uRed">
+<td nowrap>S_DONE->S_LOAD_A</td>
+<td class="rt">175</td>
+<td>Not&nbsp;Covered</td>
+</tr><tr class="uRed">
+<td nowrap>S_DONE->S_LOAD_B</td>
+<td class="rt">176</td>
+<td>Not&nbsp;Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_DONE->S_READ</td>
+<td class="rt">178</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_IDLE->S_COMPUTE</td>
+<td class="rt">158</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_IDLE->S_LOAD_A</td>
+<td class="rt">156</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td nowrap>S_IDLE->S_LOAD_B</td>
+<td class="rt">157</td>
+<td>Not&nbsp;Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_LOAD_A->S_IDLE</td>
+<td class="rt">209</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td nowrap>S_LOAD_B->S_IDLE</td>
+<td class="rt">209</td>
+<td>Not&nbsp;Covered</td>
+</tr><tr class="uRed">
+<td nowrap>S_READ->S_DONE</td>
+<td class="rt">181</td>
+<td>Not&nbsp;Covered</td>
+</tr><tr class="uRed">
+<td nowrap>S_READ->S_IDLE</td>
+<td class="rt">209</td>
+<td>Not&nbsp;Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_WB->S_COMPUTE</td>
+<td class="rt">172</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td nowrap>S_WB->S_DONE</td>
+<td class="rt">171</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td nowrap>S_WB->S_IDLE</td>
+<td class="rt">209</td>
+<td>Not&nbsp;Covered</td>
+</tr></table><br clear=all>
+<br clear=all>
+<hr>
+<a name="Branch"></a>
+Branch Coverage for Module : <a href="mod5.html" >systolic_array</a><br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=120></th><th nowrap width=80>Line No.</th><th nowrap width=80>Total</th><th nowrap width=80>Covered</th><th nowrap width=80>Percent</th></tr><tr class="s7">
+<td>Branches</td>
+<td></td>
+<td class="rt">62</td>
+<td class="rt">49</td>
+<td class="rt">79.03 </td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">301</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">302</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">301</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">302</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">320</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">321</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">320</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">321</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s5">
+<td>CASE</td>
+<td class="rt">154</td>
+<td class="rt">20</td>
+<td class="rt">11</td>
+<td class="rt">55.00 </td>
+</tr><tr class="s8">
+<td>IF</td>
+<td class="rt">208</td>
+<td class="rt">23</td>
+<td class="rt">19</td>
+<td class="rt">82.61 </td>
+</tr><tr class="s10">
+<td>IF</td>
+<td class="rt">378</td>
+<td class="rt">3</td>
+<td class="rt">3</td>
+<td class="rt">100.00</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+301              assign ASEL = (KA < MN) ? (PASS_I*MN + KA) : {SELW{1'b0}};
+                                         <font color = "green">-1-</font>  
+                                         <font color = "green">==></font>  
+                                         <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+302              assign AH[(PN+1)*GI] = (KA < MN) ? ABUS[ASEL*DW +: DW] : {DW{1'b0}};
+                                                  <font color = "green">-1-</font>  
+                                                  <font color = "green">==></font>  
+                                                  <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+301              assign ASEL = (KA < MN) ? (PASS_I*MN + KA) : {SELW{1'b0}};
+                                         <font color = "green">-1-</font>  
+                                         <font color = "green">==></font>  
+                                         <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+302              assign AH[(PN+1)*GI] = (KA < MN) ? ABUS[ASEL*DW +: DW] : {DW{1'b0}};
+                                                  <font color = "green">-1-</font>  
+                                                  <font color = "green">==></font>  
+                                                  <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+320              assign BSEL = (KB < MN) ? (PASS_J*MN + KB) : {SELW{1'b0}};
+                                         <font color = "green">-1-</font>  
+                                         <font color = "green">==></font>  
+                                         <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+321              assign BV[GJ] = (KB < MN) ? BBUS[BSEL*DW +: DW] : {DW{1'b0}};
+                                           <font color = "green">-1-</font>  
+                                           <font color = "green">==></font>  
+                                           <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+320              assign BSEL = (KB < MN) ? (PASS_J*MN + KB) : {SELW{1'b0}};
+                                         <font color = "green">-1-</font>  
+                                         <font color = "green">==></font>  
+                                         <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+321              assign BV[GJ] = (KB < MN) ? BBUS[BSEL*DW +: DW] : {DW{1'b0}};
+                                           <font color = "green">-1-</font>  
+                                           <font color = "green">==></font>  
+                                           <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+154            case (STATE)
+               <font color = "red">-1-</font>  
+155              S_IDLE: begin
+156                if      (LOAD_A) NEXT_STATE = S_LOAD_A;
+                   <font color = "green">-2-</font>  
+           <font color = "green">        ==></font>
+157                else if (LOAD_B) NEXT_STATE = S_LOAD_B;
+                        <font color = "red">-3-</font>  
+           <font color = "red">        ==></font>
+158                else if (START)  NEXT_STATE = S_COMPUTE;
+                        <font color = "green">-4-</font>  
+           <font color = "green">        ==></font>
+                   MISSING_ELSE
+           <font color = "green">        ==></font>
+159              end
+160              S_LOAD_A: begin
+161                if (!LOAD_A) NEXT_STATE = S_IDLE;
+                   <font color = "red">-5-</font>  
+           <font color = "red">        ==></font>
+                   MISSING_ELSE
+           <font color = "green">        ==></font>
+162              end
+163              S_LOAD_B: begin
+164                if (!LOAD_B) NEXT_STATE = S_IDLE;
+                   <font color = "red">-6-</font>  
+           <font color = "red">        ==></font>
+                   MISSING_ELSE
+           <font color = "red">        ==></font>
+165              end
+166              S_COMPUTE: begin
+167                if (T_CNT == T_LAST) NEXT_STATE = S_WB;
+                   <font color = "green">-7-</font>  
+           <font color = "green">        ==></font>
+                   MISSING_ELSE
+           <font color = "green">        ==></font>
+168              end
+169              S_WB: begin
+170                // one cycle to copy the block out, then either the next pass or done
+171                if (LAST_PASS) NEXT_STATE = S_DONE;
+                   <font color = "green">-8-</font>  
+           <font color = "green">        ==></font>
+172                else           NEXT_STATE = S_COMPUTE;
+           <font color = "green">        ==></font>
+173              end
+174              S_DONE: begin
+175                if      (LOAD_A) NEXT_STATE = S_LOAD_A;
+                   <font color = "red">-9-</font>  
+           <font color = "red">        ==></font>
+176                else if (LOAD_B) NEXT_STATE = S_LOAD_B;
+                        <font color = "red">-10-</font>  
+           <font color = "red">        ==></font>
+177                else if (START)  NEXT_STATE = S_COMPUTE;
+                        <font color = "red">-11-</font>  
+           <font color = "red">        ==></font>
+178                else if (READ)   NEXT_STATE = S_READ;
+                        <font color = "green">-12-</font>  
+           <font color = "green">        ==></font>
+                   MISSING_ELSE
+           <font color = "green">        ==></font>
+179              end
+180              S_READ: begin
+181                if (!READ) NEXT_STATE = S_DONE;
+                   <font color = "red">-13-</font>  
+           <font color = "red">        ==></font>
+                   MISSING_ELSE
+           <font color = "green">        ==></font>
+182              end
+183              default: NEXT_STATE = S_IDLE;
+           <font color = "red">      ==></font>
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>-3-</th><th nowrap width=80>-4-</th><th nowrap width=80>-5-</th><th nowrap width=80>-6-</th><th nowrap width=80>-7-</th><th nowrap width=80>-8-</th><th nowrap width=80>-9-</th><th nowrap width=80>-10-</th><th nowrap width=80>-11-</th><th nowrap width=80>-12-</th><th nowrap width=80>-13-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>S_IDLE </td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td align=center>S_IDLE </td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uGreen">
+<td align=center>S_IDLE </td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>S_IDLE </td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td align=center>S_LOAD_A </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uGreen">
+<td align=center>S_LOAD_A </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td align=center>S_LOAD_B </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uRed">
+<td align=center>S_LOAD_B </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uGreen">
+<td align=center>S_COMPUTE </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>S_COMPUTE </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>S_WB </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>S_WB </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td align=center>S_DONE </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uRed">
+<td align=center>S_DONE </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uRed">
+<td align=center>S_DONE </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uGreen">
+<td align=center>S_DONE </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>S_DONE </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td align=center>S_READ </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td>Not Covered</td>
+</tr><tr class="uGreen">
+<td align=center>S_READ </td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td align=center>default</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+208            if (!RESET_N) begin
+               <font color = "green">-1-</font>  
+209              STATE  <= S_IDLE;
+           <font color = "green">      ==></font>
+210              A_PTR  <= {PTRW{1'b0}};
+211              B_PTR  <= {PTRW{1'b0}};
+212              T_CNT  <= {TW{1'b0}};
+213              PASS_I <= {BW{1'b0}};
+214              PASS_J <= {BW{1'b0}};
+215              RD_PTR <= {RDW{1'b0}};
+216              for (I = 0; I < MNN; I = I + 1) begin
+217                A_MEM[I] <= {DW{1'b0}};
+218                B_MEM[I] <= {DW{1'b0}};
+219              end
+220            end
+221            else begin
+222              STATE <= NEXT_STATE;
+223        
+224              // ---- A load pointer and store ----
+225              if (!LOAD_A)   A_PTR <= {PTRW{1'b0}};   // pointer rearms between bursts
+                 <font color = "green">-2-</font>  
+           <font color = "green">      ==></font>
+226              else if (WR_A) A_PTR <= A_PTR + 1'b1;
+                      <font color = "red">-3-</font>  
+           <font color = "green">      ==></font>
+                 MISSING_ELSE
+           <font color = "red">      ==></font>
+227        
+228              if (WR_A) A_MEM[A_PTR] <= DATA_IN[DW-1:0];
+                 <font color = "green">-4-</font>  
+           <font color = "green">      ==></font>
+                 MISSING_ELSE
+           <font color = "green">      ==></font>
+229        
+230              // ---- B load pointer and store ----
+231              if (!LOAD_B)   B_PTR <= {PTRW{1'b0}};
+                 <font color = "red">-5-</font>  
+           <font color = "green">      ==></font>
+232              else if (WR_B) B_PTR <= B_PTR + 1'b1;
+                      <font color = "red">-6-</font>  
+           <font color = "red">      ==></font>
+                 MISSING_ELSE
+           <font color = "red">      ==></font>
+233        
+234              if (WR_B) B_MEM[B_PTR] <= DATA_IN[DW-1:0];
+                 <font color = "red">-7-</font>  
+           <font color = "red">      ==></font>
+                 MISSING_ELSE
+           <font color = "green">      ==></font>
+235        
+236              // ---- systolic step counter, restarted for every pass ----
+237              if (CLR_ACC)                 T_CNT <= {TW{1'b0}};
+                 <font color = "green">-8-</font>  
+           <font color = "green">      ==></font>
+238              else if (STATE == S_COMPUTE) T_CNT <= T_CNT + 1'b1;
+                      <font color = "green">-9-</font>  
+           <font color = "green">      ==></font>
+                 MISSING_ELSE
+           <font color = "green">      ==></font>
+239        
+240              // ---- pass counters: zeroed per computation, advanced per writeback ----
+241              if (START_RUN) begin
+                 <font color = "green">-10-</font>  
+242                PASS_I <= {BW{1'b0}};
+           <font color = "green">        ==></font>
+243                PASS_J <= {BW{1'b0}};
+244              end
+245              else if (WB_NOW) begin
+                      <font color = "green">-11-</font>  
+246                if (PASS_J == (BLK - 1)) begin
+                   <font color = "green">-12-</font>  
+247                  PASS_J <= {BW{1'b0}};
+248                  if (PASS_I != (BLK - 1)) PASS_I <= PASS_I + 1'b1;
+                     <font color = "green">-13-</font>  
+           <font color = "green">          ==></font>
+                     MISSING_ELSE
+           <font color = "green">          ==></font>
+249                end
+250                else begin
+251                  PASS_J <= PASS_J + 1'b1;
+           <font color = "green">          ==></font>
+252                end
+253              end
+                 MISSING_ELSE
+           <font color = "green">      ==></font>
+254        
+255              // ---- readout pointer ----
+256              // The wrap is explicit rather than relying on the counter overflowing,
+257              // because MNN*OBYTES is only a power of two when MN is.  Without this the
+258              // pointer would run past the last element for e.g. MN = 3.
+259              if (START_RUN)
+                 <font color = "green">-14-</font>  
+260                RD_PTR <= {RDW{1'b0}};
+           <font color = "green">        ==></font>
+261              else if (NEXT_STATE == S_READ)
+                      <font color = "green">-15-</font>  
+262                RD_PTR <= (RD_PTR == (MNN*OBYTES - 1)) ? {RDW{1'b0}} : RD_PTR + 1'b1;
+                                                          <font color = "green">-16-</font>  
+                                                          <font color = "green">==></font>  
+                                                          <font color = "green">==></font>  
+                   MISSING_ELSE
+           <font color = "green">        ==></font>
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>-3-</th><th nowrap width=80>-4-</th><th nowrap width=80>-5-</th><th nowrap width=80>-6-</th><th nowrap width=80>-7-</th><th nowrap width=80>-8-</th><th nowrap width=80>-9-</th><th nowrap width=80>-10-</th><th nowrap width=80>-11-</th><th nowrap width=80>-12-</th><th nowrap width=80>-13-</th><th nowrap width=80>-14-</th><th nowrap width=80>-15-</th><th nowrap width=80>-16-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uRed">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uRed">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uRed">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Not Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center>1</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center>1</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+378                if (!RESET_N) begin
+                   <font color = "green">-1-</font>  
+379                  for (CI = 0; CI < MNN; CI = CI + 1)
+           <font color = "green">          ==></font>
+380                    CBUF[CI] <= {ACCW{1'b0}};
+381                end
+382                else if (WB_NOW) begin
+                        <font color = "green">-2-</font>  
+383                  for (WI = 0; WI < PN; WI = WI + 1)
+           <font color = "green">          ==></font>
+384                    for (WJ = 0; WJ < PN; WJ = WJ + 1)
+385                      CBUF[MN*(PN*PASS_I + WI) + PN*PASS_J + WJ]
+386                        <= ACC_BUS[(PN*WI + WJ)*ACCW +: ACCW];
+387                end
+                   MISSING_ELSE
+           <font color = "green">        ==></font>
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+</div>
+</div>
+<div class="ui-layout-center-inner-north">
+<div id="center-bread-crumb" class="breadCrumb module urg-margin-bottom">
+  <ul name="inst_tag_8">
+    <li>
+      <a href="#Line">Line</a>    </li>
+    <li>
+      <a href="#Cond">Cond</a>    </li>
+    <li>
+      <a href="#Toggle">Toggle</a>    </li>
+    <li>
+      <a href="#FSM">FSM</a>    </li>
+    <li>
+      <a href="#Branch">Branch</a>    </li>
+  </ul>
+  <ul name="tag_systolic_array">
+    <li>
+      <a href="#Line">Line</a>    </li>
+    <li>
+      <a href="#Cond">Cond</a>    </li>
+    <li>
+      <a href="#Toggle">Toggle</a>    </li>
+    <li>
+      <a href="#FSM">FSM</a>    </li>
+    <li>
+      <a href="#Branch">Branch</a>    </li>
+  </ul>
+</div>
+</div>
+</div>
+<div class="ui-layout-south">
+<table align=center><tr><td class="s0 cl">0%</td>
+<td class="s1 cl">10%</td>
+<td class="s2 cl">20%</td>
+<td class="s3 cl">30%</td>
+<td class="s4 cl">40%</td>
+<td class="s5 cl">50%</td>
+<td class="s6 cl">60%</td>
+<td class="s7 cl">70%</td>
+<td class="s8 cl">80%</td>
+<td class="s9 cl">90%</td>
+<td class="s10 cl">100%</td></tr></table></div>
+</body>
+</html>

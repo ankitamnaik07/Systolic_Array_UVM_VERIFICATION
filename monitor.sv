@@ -37,7 +37,7 @@ class monitor extends uvm_monitor;
       t.uo_out  = vif.mon_cb.uo_out;
       t.uio_out = vif.mon_cb.uio_out;
       t.uio_oe  = vif.mon_cb.uio_oe;
-
+	//$display("%b",t.ui_in);
       mon_port.write(t);
 
     end
