@@ -58,7 +58,7 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1;  uio_in == 8'h08; ui_in == 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+	    assert(req.randomize() with {rst_n == 1'b1;  uio_in == 8'h08; ui_in=8'h0;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);
@@ -80,6 +80,150 @@ class reset_idle_seq extends systolic_base_seq;
     read_results(32);
   endtask
 endclass
+
+
+
+class reset_state_seq extends systolic_base_seq;
+  `uvm_object_utils(reset_state_seq)
+
+  function new(string name = "reset_state_seq");
+    super.new(name);
+  endfunction
+
+  task reset_now();
+    req = seq_item::type_id::create("req");
+
+    start_item(req);
+    assert(req.randomize() with {
+      rst_n  == 1'b0;
+      ena    == 1'b1;
+      uio_in == 8'h00;
+      ui_in  == 8'h00;
+    }) else
+      `uvm_error(get_type_name(), "Reset assertion randomization failed")
+    finish_item(req);
+
+    start_item(req);
+    assert(req.randomize() with {
+      rst_n  == 1'b1;
+      ena    == 1'b1;
+      uio_in == 8'h00;
+      ui_in  == 8'h00;
+    }) else
+      `uvm_error(get_type_name(), "Reset release randomization failed")
+    finish_item(req);
+
+    idle_cycles(1);
+  endtask
+
+
+  task send_start();
+    req = seq_item::type_id::create("req");
+
+    start_item(req);
+    assert(req.randomize() with {
+      rst_n  == 1'b1;
+      ena    == 1'b1;
+      uio_in == 8'h04;
+      ui_in  == 8'h00;
+    }) else
+      `uvm_error(get_type_name(), "START randomization failed")
+    finish_item(req);
+  endtask
+
+
+  // Send one READ command
+  task send_read();
+    req = seq_item::type_id::create("req");
+
+    start_item(req);
+    assert(req.randomize() with {
+      rst_n  == 1'b1;
+      ena    == 1'b1;
+      uio_in == 8'h08;
+      ui_in  == 8'h00;
+    }) else
+      `uvm_error(get_type_name(), "READ randomization failed")
+    finish_item(req);
+
+    idle_cycles(1);
+  endtask
+
+
+  task body();
+
+    apply_reset(2);
+
+    // -----------------------------------------
+    // Scenario 1: Reset during COMPUTE
+    // -----------------------------------------
+    `uvm_info("RESET_TEST", "Reset during COMPUTE", UVM_LOW)
+
+    load_a(16);
+    load_b(16);
+
+    send_start();
+
+    // This is the existing COMPUTE timing attempt.
+    idle_cycles(2);
+
+    reset_now();
+
+
+    // -----------------------------------------
+    // Scenario 2: Reset during WB
+    // -----------------------------------------
+    `uvm_info("RESET_TEST", "Reset during WB", UVM_LOW)
+
+    load_a(16);
+    load_b(16);
+
+    send_start();
+
+    // Temporary timing attempt only.
+    // This must be aligned with the actual RTL WB state.
+    idle_cycles(6);
+
+    reset_now();
+
+
+    // -----------------------------------------
+    // Scenario 3: Reset during DONE
+    // -----------------------------------------
+    `uvm_info("RESET_TEST", "Reset during DONE", UVM_LOW)
+
+    load_a(16);
+    load_b(16);
+
+    start_and_wait_done();
+
+    reset_now();
+
+
+    // -----------------------------------------
+    // Scenario 4: Reset during READ
+    // -----------------------------------------
+    `uvm_info("RESET_TEST", "Reset during READ", UVM_LOW)
+
+    load_a(16);
+    load_b(16);
+
+    start_and_wait_done();
+
+//    send_read();
+	  read_results();
+    reset_now();
+
+    `uvm_info("RESET_TEST",
+              "Reset-state scenarios completed",
+              UVM_LOW)
+
+  endtask
+
+endclass
+
+
+
 
 class reset_abort_seq extends systolic_base_seq;
   `uvm_object_utils(reset_abort_seq)
@@ -246,19 +390,20 @@ class matrix_order_seq extends systolic_base_seq;
     apply_reset(2);
     for (int i = 0; i < 16; i++) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h01; ui_in == {4'h0, i[3:0]};}) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b1; uio_in == 8'h01; ui_in == {4'h0, i[3:0]};}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);
     for (int i = 0; i < 16; i++) begin
       val_b = 15 - i;
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h02; ui_in == {4'h0, val_b};}) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b1;uio_in == 8'h02; ui_in == {4'h0, val_b};}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);
     start_and_wait_done();
     read_results(32);
+	
   endtask
 endclass
 
