@@ -13,6 +13,7 @@ TOP           ?= tb_top
 TESTLIST ?= \
         reset_idle_test \
         reset_abort_test \
+	reset_state_test \
         ena_check_test \
         matrix_load_test \
         done_load_test \
@@ -31,7 +32,9 @@ TESTLIST ?= \
         upper_bits_test \
         read_retain_test
 
-NUM_RUNS       ?= 5
+NUM_RUNS       ?= 1
+SEED_LIST      ?= 1 10 25 50 100
+
 UVM_VERBOSITY  ?= UVM_LOW
 UVM_TIMEOUT    ?= 2000000
 
@@ -47,11 +50,11 @@ DESIGN_VDB ?= simv.vdb
 
 SINGLE_ROOT ?= single_runs
 
-REGR_ROOT       ?= regression_cm
-REGR_RUNS_DIR    = $(REGR_ROOT)/runs
-REGR_MERGED_DIR  = $(REGR_ROOT)/merged
-REGR_MERGED      = $(REGR_MERGED_DIR)/simv
-REGR_REPORT      = $(REGR_MERGED_DIR)/report
+REGR_ROOT        ?= regression_cm
+REGR_RUNS_DIR     = $(REGR_ROOT)/runs
+REGR_MERGED_DIR   = $(REGR_ROOT)/merged
+REGR_MERGED       = $(REGR_MERGED_DIR)/simv
+REGR_REPORT       = $(REGR_MERGED_DIR)/report
 
 # ---- RTL source files -----------------------------------------------
 
@@ -80,7 +83,8 @@ SIMV = simv
 
 # ---- Phony targets ---------------------------------------------------
 
-.PHONY: all vcs run regression merge_regression clean clean_regression help
+.PHONY: all vcs run regression regression_seeds \
+        merge_regression clean clean_regression help
 
 # ---- Default target --------------------------------------------------
 
@@ -95,7 +99,7 @@ vcs:
 	@echo " Compiling Systolic Array UVM Environment"
 	@echo "=================================================="
 
-	vcs $(VCS_FLAGS) \
+	$(VCS) $(VCS_FLAGS) \
 	    $(ALL_SRCS) \
 	    -top $(TOP) \
 	    -o $(SIMV) \
@@ -136,15 +140,15 @@ endif
 	@echo ">>> Coverage report: $(SINGLE_ROOT)/$(TEST)/report/dashboard.html"
 
 #=====================================================================
-# FULL REGRESSION
+# AUTOMATIC SEED REGRESSION
 #=====================================================================
 
 # Runs every test NUM_RUNS times using automatic random seeds.
-# Failed runs are recorded in failed_runs.txt.
 
 regression:
 	@mkdir -p $(REGR_RUNS_DIR)
 	@rm -f $(REGR_ROOT)/vdb_list.txt $(REGR_ROOT)/failed_runs.txt
+
 	@for t in $(TESTLIST); do \
 	    for i in $$(seq 1 $(NUM_RUNS)); do \
 	        run_dir=$(REGR_RUNS_DIR)/$${t}_run$${i}; \
@@ -182,6 +186,65 @@ regression:
 	        fi; \
 	    done; \
 	done
+
+	@$(MAKE) merge_regression
+
+#=====================================================================
+# USER-DEFINED MULTI-SEED REGRESSION
+#=====================================================================
+
+# Runs every test with every seed in SEED_LIST.
+#
+# Usage:
+# make regression_seeds
+# make regression_seeds SEED_LIST="1 5 10 20"
+# make regression_seeds TESTLIST="matrix_load_test matrix_reload_test"
+
+regression_seeds:
+	@mkdir -p $(REGR_RUNS_DIR)
+	@rm -f $(REGR_ROOT)/vdb_list.txt $(REGR_ROOT)/failed_runs.txt
+
+	@echo "=================================================="
+	@echo " MULTI-SEED REGRESSION"
+	@echo " Seeds: $(SEED_LIST)"
+	@echo " Tests: $(words $(TESTLIST))"
+	@echo "=================================================="
+
+	@for t in $(TESTLIST); do \
+	    for seed in $(SEED_LIST); do \
+	        run_dir=$(REGR_RUNS_DIR)/$${t}_seed$${seed}; \
+	        vdb=$$run_dir/simv.vdb; \
+	        log=$$run_dir/$${t}_seed$${seed}.log; \
+	        rm -rf $$run_dir; \
+	        mkdir -p $$run_dir; \
+	        echo "=================================================="; \
+	        echo "Running $$t with SEED=$$seed"; \
+	        echo "=================================================="; \
+	        ./$(SIMV) $(CM_OPTS) -cm_dir $$vdb \
+	            +UVM_TESTNAME=$$t \
+	            +UVM_VERBOSITY=$(UVM_VERBOSITY) \
+	            +UVM_TIMEOUT=$(UVM_TIMEOUT) \
+	            +ntb_random_seed=$$seed \
+	            -l $$log; \
+	        status=$$?; \
+	        if grep -qE "UVM_FATAL *: *[1-9]|UVM_ERROR *: *[1-9]" $$log 2>/dev/null; then \
+	            status=1; \
+	        fi; \
+	        if [ $$status -ne 0 ]; then \
+	            echo "$$t seed $$seed (exit=$$status) -> $$log" >> $(REGR_ROOT)/failed_runs.txt; \
+	            echo "!!! FAILED: $$t seed $$seed"; \
+	        else \
+	            echo ">>> PASSED: $$t seed $$seed"; \
+	        fi; \
+	        if [ -d $$vdb ] && [ -n "$$(ls -A $$vdb 2>/dev/null)" ]; then \
+	            echo $$vdb >> $(REGR_ROOT)/vdb_list.txt; \
+	        else \
+	            echo "!!! $$t seed $$seed produced no coverage DB"; \
+	            echo "$$t seed $$seed (NO VDB) -> $$log" >> $(REGR_ROOT)/failed_runs.txt; \
+	        fi; \
+	    done; \
+	done
+
 	@$(MAKE) merge_regression
 
 #=====================================================================
@@ -234,16 +297,40 @@ help:
 	@echo ""
 	@echo " Systolic Array UVM Verification"
 	@echo ""
-	@echo " make vcs                         Compile"
-	@echo " make run TEST=matrix_load_test   Run one test"
-	@echo " make run TEST=random_test SEED=42"
-	@echo " make regression                  Run full regression"
-	@echo " make regression NUM_RUNS=10      Change run count"
-	@echo " make regression PER_RUN_REPORT=1 Generate individual reports"
-	@echo " make merge_regression             Merge existing coverage"
-	@echo " make clean                        Clean simulation files"
-	@echo " make clean_regression             Clean regression results"
+	@echo " make vcs"
+	@echo "     Compile"
+	@echo ""
+	@echo " make run TEST=matrix_load_test"
+	@echo "     Run one test"
+	@echo ""
+	@echo " make run TEST=matrix_reload_test SEED=42"
+	@echo "     Run one test with a specific seed"
+	@echo ""
+	@echo " make regression"
+	@echo "     Automatic seed regression"
+	@echo ""
+	@echo " make regression NUM_RUNS=10"
+	@echo "     Automatic regression with 10 runs per test"
+	@echo ""
+	@echo " make regression_seeds"
+	@echo "     Run all tests with predefined seeds"
+	@echo ""
+	@echo " make regression_seeds SEED_LIST='1 5 10 20'"
+	@echo "     Run all tests with selected seeds"
+	@echo ""
+	@echo " make regression_seeds TESTLIST='matrix_load_test matrix_reload_test' SEED_LIST='1 10'"
+	@echo "     Run selected tests with selected seeds"
+	@echo ""
+	@echo " make merge_regression"
+	@echo "     Merge existing coverage databases"
+	@echo ""
+	@echo " make clean"
+	@echo "     Clean simulation files"
+	@echo ""
+	@echo " make clean_regression"
+	@echo "     Clean regression results"
 	@echo ""
 	@echo " Total tests: $(words $(TESTLIST))"
+	@echo " Default seed list: $(SEED_LIST)"
 	@echo ""
 
