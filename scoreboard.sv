@@ -116,10 +116,10 @@ class scoreboard extends uvm_scoreboard;
     end
     else begin
       pass_cnt++;
-      `uvm_info("SCB",
-        $sformatf("BYTE[%0d]: actual=0x%0h (%0d) expected=0x%0h (%0d) PASS",
-                  read_idx, t.uo_out, t.uo_out, expected_byte, expected_byte),
-        UVM_LOW)
+      //`uvm_info("SCB",
+        //$sformatf("BYTE[%0d]: actual=0x%0h (%0d) expected=0x%0h (%0d) PASS",
+          //        read_idx, t.uo_out, t.uo_out, expected_byte, expected_byte),
+        //UVM_LOW)
     end
 
     if(read_idx == 31)

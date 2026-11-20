@@ -27,42 +27,6 @@ class monitor extends uvm_monitor;
   endfunction
 
 
-  // Print Matrix A
-  function void print_matrix_a();
-
-    `uvm_info("MONITOR", "========== MATRIX A ==========", UVM_LOW)
-
-    for(int i=0; i<16; i+=4) begin
-      `uvm_info("MONITOR",
-        $sformatf("%0d  %0d  %0d  %0d",
-          matrix_a[i],
-          matrix_a[i+1],
-          matrix_a[i+2],
-          matrix_a[i+3]),
-        UVM_LOW)
-    end
-
-  endfunction
-
-
-  // Print Matrix B
-  function void print_matrix_b();
-
-    `uvm_info("MONITOR", "========== MATRIX B ==========", UVM_LOW)
-
-    for(int i=0; i<16; i+=4) begin
-      `uvm_info("MONITOR",
-        $sformatf("%0d  %0d  %0d  %0d",
-          matrix_b[i],
-          matrix_b[i+1],
-          matrix_b[i+2],
-          matrix_b[i+3]),
-        UVM_LOW)
-    end
-
-  endfunction
-
-
   task run_phase(uvm_phase phase);
 
     seq_item t;
@@ -81,43 +45,11 @@ class monitor extends uvm_monitor;
       t.uio_out = vif.mon_cb.uio_out;
       t.uio_oe  = vif.mon_cb.uio_oe;
 
-
-      // Reset matrix counters
-      if(!t.rst_n) begin
-        a_count = 0;
-        b_count = 0;
-      end
-
-      // Capture Matrix A
-      else if(t.uio_in == 8'h01) begin
-
-        if(a_count < 16) begin
-          matrix_a[a_count] = t.ui_in[3:0];
-          a_count++;
-
-          if(a_count == 16)
-            print_matrix_a();
-        end
-
-      end
-
-      // Capture Matrix B
-      else if(t.uio_in == 8'h02) begin
-
-        if(b_count < 16) begin
-          matrix_b[b_count] = t.ui_in[3:0];
-          b_count++;
-
-          if(b_count == 16)
-            print_matrix_b();
-        end
-
-      end
-	    //$display("%b",t.ui_in);
-      mon_port.write(t);
-
+	    mon_port.write(t);
     end
 
   endtask
 
 endclass
+
+

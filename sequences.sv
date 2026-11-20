@@ -97,7 +97,9 @@ class reset_abort_seq extends systolic_base_seq;
   endtask
 endclass
 
+
 class ena_check_seq extends systolic_base_seq;
+
   `uvm_object_utils(ena_check_seq)
 
   function new(string name = "ena_check_seq");
@@ -105,12 +107,53 @@ class ena_check_seq extends systolic_base_seq;
   endfunction
 
   task body();
-   apply_reset(2);
+
+    apply_reset(2);
+
     load_a(16);
     load_b(16);
-    start_and_wait_done();
-    read_results(32); 
+
+    req = seq_item::type_id::create("req");
+
+    start_item(req);
+    assert(req.randomize() with {
+      rst_n  == 1'b1;
+      ena    == 1'b1;
+      uio_in == 8'h04;
+      ui_in  == 8'h00;
+    })
+    else `uvm_error(get_type_name(), "START randomization failed")
+    finish_item(req);
+
+    repeat(5) begin
+
+      start_item(req);
+      assert(req.randomize() with {
+        rst_n  == 1'b1;
+        ena    == 1'b0;
+        uio_in == 8'h00;
+        ui_in  == 8'h00;
+      })
+      else `uvm_error(get_type_name(), "ENA LOW randomization failed")
+      finish_item(req);
+
+      start_item(req);
+      assert(req.randomize() with {
+        rst_n  == 1'b1;
+        ena    == 1'b1;
+        uio_in == 8'h00;
+        ui_in  == 8'h00;
+      })
+      else `uvm_error(get_type_name(), "ENA HIGH randomization failed")
+      finish_item(req);
+
+    end
+
+    idle_cycles(32);
+
+    read_results(32);
   endtask
+
 endclass
 
 class matrix_load_seq extends systolic_base_seq;
@@ -131,7 +174,9 @@ class matrix_load_seq extends systolic_base_seq;
   endtask
 endclass
 
+
 class done_load_seq extends systolic_base_seq;
+
   `uvm_object_utils(done_load_seq)
 
   function new(string name = "done_load_seq");
@@ -139,15 +184,28 @@ class done_load_seq extends systolic_base_seq;
   endfunction
 
   task body();
+
     apply_reset(2);
+
     load_a(16);
     load_b(16);
     start_and_wait_done();
-    //read_results(32);
+
+    load_a(16);
+    load_b(16);
+    start_and_wait_done();
+
+    idle_cycles(1);
+    load_a(16);
+    load_b(16);
+    start_and_wait_done();
+
+    idle_cycles(2);
     load_a(16);
     load_b(16);
     start_and_wait_done();
     read_results(32);
+
   endtask
 endclass
 
@@ -164,9 +222,11 @@ class matrix_reload_seq extends systolic_base_seq;
     load_b(16);
     start_and_wait_done();
     read_results(32);
+
     load_a(16);
     start_and_wait_done();
     read_results(32);
+
     load_b(16);
     start_and_wait_done();
     read_results(32);
