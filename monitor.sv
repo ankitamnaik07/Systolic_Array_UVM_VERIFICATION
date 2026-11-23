@@ -3,7 +3,8 @@ class monitor extends uvm_monitor;
   `uvm_component_utils(monitor)
 
   uvm_analysis_port #(seq_item) mon_port;
-
+  int count;
+  bit start_asserted;
   virtual intf vif;
 
   function new(string name = "monitor",
@@ -37,7 +38,26 @@ class monitor extends uvm_monitor;
       t.uo_out  = vif.mon_cb.uo_out;
       t.uio_out = vif.mon_cb.uio_out;
       t.uio_oe  = vif.mon_cb.uio_oe;
+	
+	/*if(t.uio_in[2]) `uvm_info("MONITOR", $sformatf("start asserted time = %0t", $time), UVM_NONE)
 
+	if(start_asserted) count++;
+
+	if(t.uio_in[2])begin
+		start_asserted = 1;
+	end
+	
+	if(count != 0) begin 
+		if(!t.uio_out[4]) `uvm_error("BUSY ERROR", $sformatf("time = %0t", $time))
+	end
+	
+	if(count >= 28)begin 
+	 count = 0;
+	 start_asserted = 0;
+end
+*/
+
+//	$display("%b",t.ui_in);
       mon_port.write(t);
 
     end

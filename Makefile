@@ -1,189 +1,335 @@
-# ============================================================
-# Makefile for Systolic Array UVM Verification
-# Simulator: Synopsys VCS
-# ============================================================
+# ====================================================================
+# VCS / UVM Regression Makefile
+# Systolic Array UVM Verification
+#=====================================================================
 
-VCS       ?= vcs
-VERDI     ?= verdi
+# ---- Config ---------------------------------------------------------
 
-TOP       ?= tb_top
-TEST      ?= reset_idle_test
+VCS           ?= vcs
+URG           ?= urg
+TOP           ?= tb_top
 
-RTL       ?= pe.v project.v systolic_array.v
+TESTLIST ?= \
+        reset_idle_test \
+        reset_abort_test \
+	systolic_reset_fsm_test \
+        ena_check_test \
+        matrix_load_test \
+        done_load_test \
+        matrix_reload_test \
+        matrix_order_test \
+        arithmetic_test \
+        overflow_test \
+        read_wrap_test \
+        data_retain_test \
+        random_test \
+        priority_test \
+        wb_start_test \
+        invalid_req_test \
+        load_length_test \
+        back2back_test \
+        upper_bits_test \
+        read_retain_test
 
-SIMV      := simv
-LOG_DIR   := logs
+NUM_RUNS       ?= 1
+SEED_LIST      ?= 1 10 25 50 100
 
-BUILD_LOG := $(LOG_DIR)/compile.log
-RUN_LOG   := $(LOG_DIR)/$(TEST).log
+UVM_VERBOSITY  ?= UVM_LOW
+UVM_TIMEOUT    ?= 2000000
 
-# ------------------------------------------------------------
-# Testbench source files
-# ------------------------------------------------------------
+PER_RUN_REPORT ?= 0
 
-TB_FILES := interface.sv systolic_tb_pkg.sv tb_top.sv
+# ---- Coverage options -----------------------------------------------
 
-# ------------------------------------------------------------
-# VCS compilation flags
-# ------------------------------------------------------------
+CM_OPTS = -cm line+cond+fsm+tgl+branch+assert
 
-VCS_FLAGS := -full64 -sverilog -ntb_opts uvm-1.2 \
-             -timescale=1ns/1ps \
-             -debug_access+all \
-             -kdb \
-             +incdir+.
+DESIGN_VDB ?= simv.vdb
 
-# ------------------------------------------------------------
-# All UVM testcases
-# IMPORTANT: Names must match test class names in test.sv
-# ------------------------------------------------------------
+# ---- Output directories ---------------------------------------------
 
-TESTS := reset_idle_test \
-         reset_abort_test \
-         ena_check_test \
-         matrix_load_test \
-         done_load_test \
-         matrix_reload_test \
-         matrix_order_test \
-         arithmetic_test \
-         overflow_test \
-         read_wrap_test \
-         data_retain_test \
-         random_test \
-         priority_test \
-         wb_start_test \
-         invalid_req_test \
-         load_length_test \
-         back2back_test \
-         upper_bits_test \
-         read_retain_test
+SINGLE_ROOT ?= single_runs
 
-# ------------------------------------------------------------
-# Phony targets
-# ------------------------------------------------------------
+REGR_ROOT        ?= regression_cm
+REGR_RUNS_DIR     = $(REGR_ROOT)/runs
+REGR_MERGED_DIR   = $(REGR_ROOT)/merged
+REGR_MERGED       = $(REGR_MERGED_DIR)/simv
+REGR_REPORT       = $(REGR_MERGED_DIR)/report
 
-.PHONY: all compile run run-all run-gui clean help check-rtl
+# ---- RTL source files -----------------------------------------------
 
-all: compile
+RTL_SRCS = \
+        pe.v \
+        systolic_array.v \
+        project.v
 
-# ------------------------------------------------------------
-# Check RTL files
-# ------------------------------------------------------------
+# ---- Testbench source files -----------------------------------------
 
-check-rtl:
-	@if [ -z "$(strip $(RTL))" ]; then \
-		echo "ERROR: Please specify RTL files."; \
-		echo 'Example: make compile RTL="pe.v project.v systolic_array.v"'; \
-		exit 1; \
-	fi
+TB_SRCS = \
+        interface.sv \
+        systolic_tb_pkg.sv \
+        tb_top.sv
 
-# ------------------------------------------------------------
-# Create log directory
-# ------------------------------------------------------------
+ALL_SRCS = $(RTL_SRCS) $(TB_SRCS)
 
-$(LOG_DIR):
-	mkdir -p $(LOG_DIR)
+# ---- VCS compile options --------------------------------------------
 
-# ------------------------------------------------------------
-# Compile RTL and UVM testbench
-# ------------------------------------------------------------
+VCS_FLAGS = -full64 -sverilog -ntb_opts uvm-1.2 -licqueue \
+            -debug_access+all \ -timescale="1ns/1ps" \
+            -assert svaext -lca -assert enable_diag \
+            $(CM_OPTS)
 
-compile: check-rtl $(LOG_DIR)
-	$(VCS) $(VCS_FLAGS) -top $(TOP) $(RTL) $(TB_FILES) \
-		-o $(SIMV) -l $(BUILD_LOG)
+SIMV = simv
 
-# ------------------------------------------------------------
-# Run one testcase
+# ---- Phony targets ---------------------------------------------------
+
+.PHONY: all vcs run regression regression_seeds \
+        merge_regression clean clean_regression help
+
+# ---- Default target --------------------------------------------------
+
+all: vcs
+
+#=====================================================================
+# COMPILE
+#=====================================================================
+
+vcs:
+	@echo "=================================================="
+	@echo " Compiling Systolic Array UVM Environment"
+	@echo "=================================================="
+
+	$(VCS) $(VCS_FLAGS) \
+	    $(ALL_SRCS) \
+	    -top $(TOP) \
+	    -o $(SIMV) \
+	    -l compile.log
+
+	@echo ">>> Compilation completed. Check compile.log"
+
+#=====================================================================
+# RUN SINGLE TEST
+#=====================================================================
+
 # Usage:
-# make run TEST=reset_idle_test
-# ------------------------------------------------------------
+# make run TEST=matrix_load_test
+# make run TEST=matrix_load_test SEED=42
 
 run:
-	@if [ ! -x ./$(SIMV) ]; then \
-		echo "Simulation executable not found. Run make compile first."; \
-		exit 1; \
+ifndef TEST
+	$(error Usage: make run TEST=<test_name> [SEED=<n>])
+endif
+
+	@rm -rf $(SINGLE_ROOT)/$(TEST)
+	@mkdir -p $(SINGLE_ROOT)/$(TEST)
+
+	./$(SIMV) $(CM_OPTS) \
+	    -cm_dir $(SINGLE_ROOT)/$(TEST)/simv.vdb \
+	    +UVM_TESTNAME=$(TEST) \
+	    +UVM_VERBOSITY=$(UVM_VERBOSITY) \
+	    +UVM_TIMEOUT=$(UVM_TIMEOUT) \
+	    $(if $(SEED),+ntb_random_seed=$(SEED)) \
+	    -l $(SINGLE_ROOT)/$(TEST)/$(TEST).log
+
+	$(URG) -dir $(DESIGN_VDB) \
+	    $(SINGLE_ROOT)/$(TEST)/simv.vdb \
+	    -report $(SINGLE_ROOT)/$(TEST)/report
+
+	@echo ">>> Test log       : $(SINGLE_ROOT)/$(TEST)/$(TEST).log"
+	@echo ">>> Coverage DB    : $(SINGLE_ROOT)/$(TEST)/simv.vdb"
+	@echo ">>> Coverage report: $(SINGLE_ROOT)/$(TEST)/report/dashboard.html"
+
+#=====================================================================
+# AUTOMATIC SEED REGRESSION
+#=====================================================================
+
+# Runs every test NUM_RUNS times using automatic random seeds.
+
+regression:
+	@mkdir -p $(REGR_RUNS_DIR)
+	@rm -f $(REGR_ROOT)/vdb_list.txt $(REGR_ROOT)/failed_runs.txt
+
+	@for t in $(TESTLIST); do \
+	    for i in $$(seq 1 $(NUM_RUNS)); do \
+	        run_dir=$(REGR_RUNS_DIR)/$${t}_run$${i}; \
+	        vdb=$$run_dir/simv.vdb; \
+	        log=$$run_dir/$${t}_run$${i}.log; \
+	        rm -rf $$run_dir; \
+	        mkdir -p $$run_dir; \
+	        echo "=================================================="; \
+	        echo "Running $$t (run $$i / $(NUM_RUNS))"; \
+	        echo "=================================================="; \
+	        ./$(SIMV) $(CM_OPTS) -cm_dir $$vdb \
+	            +UVM_TESTNAME=$$t \
+	            +UVM_VERBOSITY=$(UVM_VERBOSITY) \
+	            +UVM_TIMEOUT=$(UVM_TIMEOUT) \
+	            +ntb_random_seed_automatic \
+	            -l $$log; \
+	        status=$$?; \
+	        if grep -qE "UVM_FATAL *: *[1-9]|UVM_ERROR *: *[1-9]" $$log 2>/dev/null; then \
+	            status=1; \
+	        fi; \
+	        if [ $$status -ne 0 ]; then \
+	            echo "$$t run $$i (exit=$$status) -> $$log" >> $(REGR_ROOT)/failed_runs.txt; \
+	            echo "!!! $$t run $$i FAILED - see $$log"; \
+	        else \
+	            echo ">>> $$t run $$i PASSED"; \
+	        fi; \
+	        if [ -d $$vdb ] && [ -n "$$(ls -A $$vdb 2>/dev/null)" ]; then \
+	            echo $$vdb >> $(REGR_ROOT)/vdb_list.txt; \
+	        else \
+	            echo "!!! $$t run $$i produced no coverage DB"; \
+	            echo "$$t run $$i (NO VDB) -> $$log" >> $(REGR_ROOT)/failed_runs.txt; \
+	        fi; \
+	        if [ "$(PER_RUN_REPORT)" = "1" ] && [ -d $$vdb ]; then \
+	            $(URG) -dir $(DESIGN_VDB) $$vdb -report $$run_dir/report > /dev/null 2>&1; \
+	        fi; \
+	    done; \
+	done
+
+	@$(MAKE) merge_regression
+
+#=====================================================================
+# USER-DEFINED MULTI-SEED REGRESSION
+#=====================================================================
+
+# Runs every test with every seed in SEED_LIST.
+#
+# Usage:
+# make regression_seeds
+# make regression_seeds SEED_LIST="1 5 10 20"
+# make regression_seeds TESTLIST="matrix_load_test matrix_reload_test"
+
+regression_seeds:
+	@mkdir -p $(REGR_RUNS_DIR)
+	@rm -f $(REGR_ROOT)/vdb_list.txt $(REGR_ROOT)/failed_runs.txt
+
+	@echo "=================================================="
+	@echo " MULTI-SEED REGRESSION"
+	@echo " Seeds: $(SEED_LIST)"
+	@echo " Tests: $(words $(TESTLIST))"
+	@echo "=================================================="
+
+	@for t in $(TESTLIST); do \
+	    for seed in $(SEED_LIST); do \
+	        run_dir=$(REGR_RUNS_DIR)/$${t}_seed$${seed}; \
+	        vdb=$$run_dir/simv.vdb; \
+	        log=$$run_dir/$${t}_seed$${seed}.log; \
+	        rm -rf $$run_dir; \
+	        mkdir -p $$run_dir; \
+	        echo "=================================================="; \
+	        echo "Running $$t with SEED=$$seed"; \
+	        echo "=================================================="; \
+	        ./$(SIMV) $(CM_OPTS) -cm_dir $$vdb \
+	            +UVM_TESTNAME=$$t \
+	            +UVM_VERBOSITY=$(UVM_VERBOSITY) \
+	            +UVM_TIMEOUT=$(UVM_TIMEOUT) \
+	            +ntb_random_seed=$$seed \
+	            -l $$log; \
+	        status=$$?; \
+	        if grep -qE "UVM_FATAL *: *[1-9]|UVM_ERROR *: *[1-9]" $$log 2>/dev/null; then \
+	            status=1; \
+	        fi; \
+	        if [ $$status -ne 0 ]; then \
+	            echo "$$t seed $$seed (exit=$$status) -> $$log" >> $(REGR_ROOT)/failed_runs.txt; \
+	            echo "!!! FAILED: $$t seed $$seed"; \
+	        else \
+	            echo ">>> PASSED: $$t seed $$seed"; \
+	        fi; \
+	        if [ -d $$vdb ] && [ -n "$$(ls -A $$vdb 2>/dev/null)" ]; then \
+	            echo $$vdb >> $(REGR_ROOT)/vdb_list.txt; \
+	        else \
+	            echo "!!! $$t seed $$seed produced no coverage DB"; \
+	            echo "$$t seed $$seed (NO VDB) -> $$log" >> $(REGR_ROOT)/failed_runs.txt; \
+	        fi; \
+	    done; \
+	done
+
+	@$(MAKE) merge_regression
+
+#=====================================================================
+# MERGE COVERAGE
+#=====================================================================
+
+merge_regression:
+	@if [ ! -s $(REGR_ROOT)/vdb_list.txt ]; then \
+	    echo "!!! No coverage DBs to merge. Check logs."; \
+	    exit 1; \
 	fi
-	./$(SIMV) +UVM_TESTNAME=$(TEST) \
-		+UVM_VERBOSITY=UVM_MEDIUM \
-		-l $(RUN_LOG)
 
-# ------------------------------------------------------------
-# Run all testcases sequentially
-# Continue even if a testcase fails
-# ------------------------------------------------------------
+	@echo ">>> Merging coverage databases..."
 
-run-all: compile
-	@failed=0; \
-	for test in $(TESTS); do \
-		echo ""; \
-		echo "================================================"; \
-		echo " Running UVM Test: $$test"; \
-		echo "================================================"; \
-		if ./$(SIMV) +UVM_TESTNAME=$$test \
-			+UVM_VERBOSITY=UVM_MEDIUM \
-			-l $(LOG_DIR)/$$test.log; then \
-			echo "PASS: $$test"; \
-		else \
-			echo "FAIL: $$test"; \
-			failed=1; \
-		fi; \
-	done; \
-	echo ""; \
-	echo "================================================"; \
-	echo "              REGRESSION SUMMARY"; \
-	echo "================================================"; \
-	if [ $$failed -eq 0 ]; then \
-		echo "ALL TESTS COMPLETED SUCCESSFULLY"; \
+	@rm -rf $(REGR_MERGED_DIR)
+	@mkdir -p $(REGR_MERGED_DIR)
+
+	$(URG) -dir $(DESIGN_VDB) \
+	    $$(cat $(REGR_ROOT)/vdb_list.txt) \
+	    -dbname $(REGR_MERGED) \
+	    -report $(REGR_REPORT)
+
+	@echo ">>> Merged DB   : $(REGR_MERGED).vdb"
+	@echo ">>> HTML report : $(REGR_REPORT)/dashboard.html"
+
+	@if [ -s $(REGR_ROOT)/failed_runs.txt ]; then \
+	    echo ">>> Some regression runs failed."; \
+	    cat $(REGR_ROOT)/failed_runs.txt; \
 	else \
-		echo "SOME TESTS FAILED. Check individual logs."; \
-		exit 1; \
+	    echo ">>> All regression runs passed."; \
 	fi
 
-# ------------------------------------------------------------
-# Run simulation and open Verdi
-# ------------------------------------------------------------
-
-run-gui: compile
-	./$(SIMV) +UVM_TESTNAME=$(TEST) \
-		+UVM_VERBOSITY=UVM_MEDIUM \
-		+vcs+dumpvars+all \
-		-l $(RUN_LOG)
-	$(VERDI) -dbdir simv.daidir &
-
-# ------------------------------------------------------------
-# Clean generated files
-# ------------------------------------------------------------
+#=====================================================================
+# CLEAN
+#=====================================================================
 
 clean:
-	rm -rf csrc simv simv.daidir *.vpd *.vcd *.fsdb *.log \
-	       DVEfiles verdiLog novas.* ucli.key $(LOG_DIR)
+	rm -rf simv simv.daidir csrc *.log $(DESIGN_VDB) \
+	       urgReport DVEfiles ucli.key \
+	       $(SINGLE_ROOT) vc_hdrs.h
 
-# ------------------------------------------------------------
-# Help
-# ------------------------------------------------------------
+clean_regression:
+	rm -rf $(REGR_ROOT)
+
+#=====================================================================
+# HELP
+#=====================================================================
 
 help:
 	@echo ""
-	@echo "Systolic Array UVM Verification"
-	@echo "================================"
+	@echo " Systolic Array UVM Verification"
 	@echo ""
-	@echo "Available commands:"
+	@echo " make vcs"
+	@echo "     Compile"
 	@echo ""
-	@echo "  make compile"
-	@echo "      Compile RTL and UVM testbench"
+	@echo " make run TEST=matrix_load_test"
+	@echo "     Run one test"
 	@echo ""
-	@echo "  make run TEST=reset_idle_test"
-	@echo "      Run one testcase"
+	@echo " make run TEST=matrix_reload_test SEED=42"
+	@echo "     Run one test with a specific seed"
 	@echo ""
-	@echo "  make run-all"
-	@echo "      Compile once and run all testcases"
+	@echo " make regression"
+	@echo "     Automatic seed regression"
 	@echo ""
-	@echo "  make run-gui TEST=reset_idle_test"
-	@echo "      Run simulation and open Verdi"
+	@echo " make regression NUM_RUNS=10"
+	@echo "     Automatic regression with 10 runs per test"
 	@echo ""
-	@echo "  make clean"
-	@echo "      Remove generated files"
+	@echo " make regression_seeds"
+	@echo "     Run all tests with predefined seeds"
 	@echo ""
-	@echo "  make help"
-	@echo "      Display this help"
+	@echo " make regression_seeds SEED_LIST='1 5 10 20'"
+	@echo "     Run all tests with selected seeds"
 	@echo ""
+	@echo " make regression_seeds TESTLIST='matrix_load_test matrix_reload_test' SEED_LIST='1 10'"
+	@echo "     Run selected tests with selected seeds"
+	@echo ""
+	@echo " make merge_regression"
+	@echo "     Merge existing coverage databases"
+	@echo ""
+	@echo " make clean"
+	@echo "     Clean simulation files"
+	@echo ""
+	@echo " make clean_regression"
+	@echo "     Clean regression results"
+	@echo ""
+	@echo " Total tests: $(words $(TESTLIST))"
+	@echo " Default seed list: $(SEED_LIST)"
+	@echo ""
+

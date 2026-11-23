@@ -1,5 +1,8 @@
 `timescale 1ns/1ps
 
+`include "uvm_macros.svh"
+`include "systolic_tb_pkg.sv"
+
 module tb_top;
 
   import uvm_pkg::*;

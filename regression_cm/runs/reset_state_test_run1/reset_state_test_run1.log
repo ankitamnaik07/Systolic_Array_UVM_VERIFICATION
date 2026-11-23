@@ -1,0 +1,154 @@
+Command: /fetools/work_area/frontend/Batch_11/moulik/systolic_array/Systolic_Array_UVM_VERIFICATION/./simv -cm line+cond+fsm+tgl+branch+assert -cm_dir regression_cm/runs/reset_state_test_run1/simv.vdb +UVM_TESTNAME=reset_state_test +UVM_VERBOSITY=UVM_LOW +UVM_TIMEOUT=2000000 +ntb_random_seed_automatic -l regression_cm/runs/reset_state_test_run1/reset_state_test_run1.log
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version Q-2020.03-SP2-8_Full64; Runtime version Q-2020.03-SP2-8_Full64;  Nov 23 01:11 2026
+NOTE: automatic random seed used: 1866118927
+UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_root.svh(402) @ 0: reporter [UVM/RELNOTES] 
+----------------------------------------------------------------
+UVM-1.2.Synopsys
+(C) 2007-2014 Mentor Graphics Corporation
+(C) 2007-2014 Cadence Design Systems, Inc.
+(C) 2006-2014 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+(C) 2013-2014 NVIDIA Corporation
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+  See http://www.eda.org/svdb/view.php?id=3313 for more details.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_DO_NOT_NEED_CONSTRUCTOR undefined.
+  See http://www.eda.org/svdb/view.php?id=3770 for more details.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO @ 0: reporter [RNTST] Running test reset_state_test...
+UVM_INFO @ 0: reporter [TIMOUTSET] '+UVM_TIMEOUT=2000000' provided on the command line is being applied.
+UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_root.svh(589) @ 0: reporter [UVMTOP] UVM testbench topology:
+------------------------------------------------------------------
+Name                       Type                        Size  Value
+------------------------------------------------------------------
+uvm_test_top               reset_state_test            -     @341 
+  env                      environment                 -     @356 
+    agt                    agent                       -     @365 
+      drv                  driver                      -     @403 
+        rsp_port           uvm_analysis_port           -     @422 
+        seq_item_port      uvm_seq_item_pull_port      -     @412 
+      mon                  monitor                     -     @432 
+        mon_port           uvm_analysis_port           -     @579 
+      sqcr                 sequencer                   -     @441 
+        rsp_export         uvm_analysis_export         -     @450 
+        seq_item_export    uvm_seq_item_pull_imp       -     @568 
+        arbitration_queue  array                       0     -    
+        lock_queue         array                       0     -    
+        num_last_reqs      integral                    32    'd1  
+        num_last_rsps      integral                    32    'd1  
+    cov                    systolic_coverage           -     @383 
+      analysis_imp         uvm_analysis_imp            -     @392 
+    scb                    scoreboard                  -     @374 
+      mon_fifo             uvm_tlm_analysis_fifo #(T)  -     @595 
+        analysis_export    uvm_analysis_imp            -     @644 
+        get_ap             uvm_analysis_port           -     @634 
+        get_peek_export    uvm_get_peek_imp            -     @614 
+        put_ap             uvm_analysis_port           -     @624 
+        put_export         uvm_put_imp                 -     @604 
+------------------------------------------------------------------
+
+UVM_INFO sequences.sv(160) @ 25000: uvm_test_top.env.agt.sqcr@@seq [RESET_TEST] Reset during COMPUTE
+UVM_INFO driver.sv(40) @ 375000: uvm_test_top.env.agt.drv [START SENT] START = 1, time = 375000
+UVM_INFO monitor.sv(42) @ 385000: uvm_test_top.env.agt.mon [MONITOR] start asserted time = 385000
+UVM_ERROR monitor.sv(51) @ 405000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 405000
+UVM_ERROR monitor.sv(51) @ 415000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 415000
+UVM_ERROR monitor.sv(51) @ 425000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 425000
+UVM_INFO sequences.sv(176) @ 425000: uvm_test_top.env.agt.sqcr@@seq [RESET_TEST] Reset during WB
+UVM_ERROR monitor.sv(51) @ 435000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 435000
+UVM_ERROR monitor.sv(51) @ 445000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 445000
+UVM_ERROR monitor.sv(51) @ 455000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 455000
+UVM_ERROR monitor.sv(51) @ 465000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 465000
+UVM_ERROR monitor.sv(51) @ 475000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 475000
+UVM_ERROR monitor.sv(51) @ 485000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 485000
+UVM_ERROR monitor.sv(51) @ 495000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 495000
+UVM_ERROR monitor.sv(51) @ 505000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 505000
+UVM_ERROR monitor.sv(51) @ 515000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 515000
+UVM_ERROR monitor.sv(51) @ 525000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 525000
+UVM_ERROR monitor.sv(51) @ 535000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 535000
+UVM_ERROR monitor.sv(51) @ 545000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 545000
+UVM_ERROR monitor.sv(51) @ 555000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 555000
+UVM_ERROR monitor.sv(51) @ 565000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 565000
+UVM_ERROR monitor.sv(51) @ 575000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 575000
+UVM_ERROR monitor.sv(51) @ 585000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 585000
+UVM_ERROR monitor.sv(51) @ 595000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 595000
+UVM_ERROR monitor.sv(51) @ 605000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 605000
+UVM_ERROR monitor.sv(51) @ 615000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 615000
+UVM_ERROR monitor.sv(51) @ 625000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 625000
+UVM_ERROR monitor.sv(51) @ 635000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 635000
+UVM_ERROR monitor.sv(51) @ 645000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 645000
+UVM_ERROR monitor.sv(51) @ 655000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 655000
+UVM_ERROR monitor.sv(51) @ 665000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 665000
+UVM_INFO driver.sv(40) @ 775000: uvm_test_top.env.agt.drv [START SENT] START = 1, time = 775000
+UVM_INFO monitor.sv(42) @ 785000: uvm_test_top.env.agt.mon [MONITOR] start asserted time = 785000
+UVM_ERROR monitor.sv(51) @ 845000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 845000
+UVM_ERROR monitor.sv(51) @ 855000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 855000
+UVM_ERROR monitor.sv(51) @ 865000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 865000
+UVM_INFO sequences.sv(193) @ 865000: uvm_test_top.env.agt.sqcr@@seq [RESET_TEST] Reset during DONE
+UVM_ERROR monitor.sv(51) @ 875000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 875000
+UVM_ERROR monitor.sv(51) @ 885000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 885000
+UVM_ERROR monitor.sv(51) @ 895000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 895000
+UVM_ERROR monitor.sv(51) @ 905000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 905000
+UVM_ERROR monitor.sv(51) @ 915000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 915000
+UVM_ERROR monitor.sv(51) @ 925000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 925000
+UVM_ERROR monitor.sv(51) @ 935000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 935000
+UVM_ERROR monitor.sv(51) @ 945000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 945000
+UVM_ERROR monitor.sv(51) @ 955000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 955000
+UVM_ERROR monitor.sv(51) @ 965000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 965000
+UVM_ERROR monitor.sv(51) @ 975000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 975000
+UVM_ERROR monitor.sv(51) @ 985000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 985000
+UVM_ERROR monitor.sv(51) @ 995000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 995000
+UVM_ERROR monitor.sv(51) @ 1005000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 1005000
+UVM_ERROR monitor.sv(51) @ 1015000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 1015000
+UVM_ERROR monitor.sv(51) @ 1025000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 1025000
+UVM_ERROR monitor.sv(51) @ 1035000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 1035000
+UVM_ERROR monitor.sv(51) @ 1045000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 1045000
+UVM_ERROR monitor.sv(51) @ 1055000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 1055000
+UVM_ERROR monitor.sv(51) @ 1065000: uvm_test_top.env.agt.mon [BUSY ERROR] time = 1065000
+UVM_INFO driver.sv(40) @ 1215000: uvm_test_top.env.agt.drv [START SENT] START = 1, time = 1215000
+UVM_INFO monitor.sv(42) @ 1225000: uvm_test_top.env.agt.mon [MONITOR] start asserted time = 1225000
+UVM_INFO sequences.sv(206) @ 1565000: uvm_test_top.env.agt.sqcr@@seq [RESET_TEST] Reset during READ
+UVM_INFO driver.sv(40) @ 1915000: uvm_test_top.env.agt.drv [START SENT] START = 1, time = 1915000
+UVM_INFO monitor.sv(42) @ 1925000: uvm_test_top.env.agt.mon [MONITOR] start asserted time = 1925000
+UVM_INFO sequences.sv(217) @ 2595000: uvm_test_top.env.agt.sqcr@@seq [RESET_TEST] Reset-state scenarios completed
+UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_objection.svh(1276) @ 2595000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+UVM_INFO scb.sv(109) @ 2595000: uvm_test_top.env.scb [SCB] TOTAL=6 PASS=6 FAIL=0
+UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_report_server.svh(894) @ 2595000: reporter [UVM/REPORT/SERVER] 
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :   19
+UVM_WARNING :    0
+UVM_ERROR :   50
+UVM_FATAL :    0
+** Report counts by id
+[BUSY ERROR]    50
+[MONITOR]     4
+[RESET_TEST]     5
+[RNTST]     1
+[SCB]     1
+[START SENT]     4
+[TEST_DONE]     1
+[TIMOUTSET]     1
+[UVM/RELNOTES]     1
+[UVMTOP]     1
+
+$finish called from file "/fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_root.svh", line 527.
+$finish at simulation time              2595000
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 2595000 ps
+CPU Time:      0.870 seconds;       Data structure size:   0.6Mb
+Mon Nov 23 01:11:25 2026

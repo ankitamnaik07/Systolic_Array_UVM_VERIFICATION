@@ -38,6 +38,8 @@ task drive(seq_item req);
   vif.drv_cb.ui_in  <= req.ui_in;
   vif.drv_cb.uio_in <= req.uio_in;
 
+//if(req.uio_in[2]) `uvm_info("START SENT", $sformatf("START = %0d, time = %0t", req.uio_in[2], $time), UVM_NONE)
+
 endtask
 endclass
 

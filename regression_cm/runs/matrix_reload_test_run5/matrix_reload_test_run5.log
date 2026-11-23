@@ -1,0 +1,87 @@
+Command: /fetools/work_area/frontend/Batch_11/moulik/systolic_array/Systolic_Array_UVM_VERIFICATION/./simv -cm line+cond+fsm+tgl+branch+assert -cm_dir regression_cm/runs/matrix_reload_test_run5/simv.vdb +UVM_TESTNAME=matrix_reload_test +UVM_VERBOSITY=UVM_LOW +UVM_TIMEOUT=2000000 +ntb_random_seed_automatic -l regression_cm/runs/matrix_reload_test_run5/matrix_reload_test_run5.log
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version Q-2020.03-SP2-8_Full64; Runtime version Q-2020.03-SP2-8_Full64;  Nov 23 01:38 2026
+NOTE: automatic random seed used: 1129511254
+UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_root.svh(402) @ 0: reporter [UVM/RELNOTES] 
+----------------------------------------------------------------
+UVM-1.2.Synopsys
+(C) 2007-2014 Mentor Graphics Corporation
+(C) 2007-2014 Cadence Design Systems, Inc.
+(C) 2006-2014 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+(C) 2013-2014 NVIDIA Corporation
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+  See http://www.eda.org/svdb/view.php?id=3313 for more details.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_DO_NOT_NEED_CONSTRUCTOR undefined.
+  See http://www.eda.org/svdb/view.php?id=3770 for more details.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO @ 0: reporter [RNTST] Running test matrix_reload_test...
+UVM_INFO @ 0: reporter [TIMOUTSET] '+UVM_TIMEOUT=2000000' provided on the command line is being applied.
+UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_root.svh(589) @ 0: reporter [UVMTOP] UVM testbench topology:
+------------------------------------------------------------------
+Name                       Type                        Size  Value
+------------------------------------------------------------------
+uvm_test_top               matrix_reload_test          -     @341 
+  env                      environment                 -     @356 
+    agt                    agent                       -     @365 
+      drv                  driver                      -     @403 
+        rsp_port           uvm_analysis_port           -     @422 
+        seq_item_port      uvm_seq_item_pull_port      -     @412 
+      mon                  monitor                     -     @432 
+        mon_port           uvm_analysis_port           -     @579 
+      sqcr                 sequencer                   -     @441 
+        rsp_export         uvm_analysis_export         -     @450 
+        seq_item_export    uvm_seq_item_pull_imp       -     @568 
+        arbitration_queue  array                       0     -    
+        lock_queue         array                       0     -    
+        num_last_reqs      integral                    32    'd1  
+        num_last_rsps      integral                    32    'd1  
+    cov                    systolic_coverage           -     @383 
+      analysis_imp         uvm_analysis_imp            -     @392 
+    scb                    scoreboard                  -     @374 
+      mon_fifo             uvm_tlm_analysis_fifo #(T)  -     @595 
+        analysis_export    uvm_analysis_imp            -     @644 
+        get_ap             uvm_analysis_port           -     @634 
+        get_peek_export    uvm_get_peek_imp            -     @614 
+        put_ap             uvm_analysis_port           -     @624 
+        put_export         uvm_put_imp                 -     @604 
+------------------------------------------------------------------
+
+UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_objection.svh(1276) @ 2685000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+UVM_INFO scb.sv(109) @ 2685000: uvm_test_top.env.scb [SCB] TOTAL=2 PASS=2 FAIL=0
+UVM_INFO /fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_report_server.svh(894) @ 2685000: reporter [UVM/REPORT/SERVER] 
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :    6
+UVM_WARNING :    0
+UVM_ERROR :    0
+UVM_FATAL :    0
+** Report counts by id
+[RNTST]     1
+[SCB]     1
+[TEST_DONE]     1
+[TIMOUTSET]     1
+[UVM/RELNOTES]     1
+[UVMTOP]     1
+
+$finish called from file "/fetools/synopsys/installed_tools/vcs/vcs/Q-2020.03-SP2-8/etc/uvm-1.2/base/uvm_root.svh", line 527.
+$finish at simulation time              2685000
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 2685000 ps
+CPU Time:      0.820 seconds;       Data structure size:   0.6Mb
+Mon Nov 23 01:38:39 2026
