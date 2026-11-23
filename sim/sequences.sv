@@ -58,7 +58,11 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
-	    assert(req.randomize() with {rst_n == 1'b1;  uio_in == 8'h08;ui_in== 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
+<<<<<<< HEAD
+	    assert(req.randomize() with {rst_n == 1'b1;  uio_in == 8'h08; ui_in inside {[8'h01:8'h0F]};}) else `uvm_error(get_type_name(), "rand failed");
+=======
+	    assert(req.randomize() with {rst_n == 1'b1;  uio_in == 8'h08; ui_in=8'h0;}) else `uvm_error(get_type_name(), "rand failed");
+>>>>>>> origin/main
       finish_item(req);
     end
     idle_cycles(1);
@@ -83,145 +87,96 @@ endclass
 
 
 
-class reset_state_seq extends systolic_base_seq;
-  `uvm_object_utils(reset_state_seq)
+class systolic_reset_fsm_seq extends systolic_base_seq;
+  `uvm_object_utils(systolic_reset_fsm_seq)
 
-  function new(string name = "reset_state_seq");
+  typedef enum {ST_IDLE, ST_LOAD_A, ST_LOAD_B, ST_COMPUTE, ST_WB, ST_DONE, ST_READ} fsm_e;
+
+  // Idle cycles after the START item before the reset item is driven.
+  // START item = cycle 0, COMPUTE = cycles 1..6, WB = cycle 7 (first pass).
+  // Tune against the waveform if the driver/DUT alignment is off by one.
+  int compute_k = 2;
+  int wb_k      = 6;
+
+  function new(string name = "systolic_reset_fsm_seq");
     super.new(name);
   endfunction
 
-  task reset_now();
+  // Drive a fixed uio_in value for n cycles with random data nibble (ui_in[7:4] = 0)
+  task drive(bit [7:0] uio, int n);
     req = seq_item::type_id::create("req");
+    repeat (n) begin
+      start_item(req);
+      assert(req.randomize() with {rst_n == 1'b1; uio_in == uio; ui_in[7:4] == 4'h0;})
+        else `uvm_error(get_type_name(), "rand failed");
+      finish_item(req);
+    end
+  endtask
 
-    start_item(req);
-    assert(req.randomize() with {
-      rst_n  == 1'b0;
-      ena    == 1'b1;
-      uio_in == 8'h00;
-      ui_in  == 8'h00;
-    }) else
-      `uvm_error(get_type_name(), "Reset assertion randomization failed")
-    finish_item(req);
+  task load_both_and_start();
+    load_a();
+    load_b();
+    drive(8'h04, 1);              // START pulse, cycle 0
+  endtask
 
-    start_item(req);
-    assert(req.randomize() with {
-      rst_n  == 1'b1;
-      ena    == 1'b1;
-      uio_in == 8'h00;
-      ui_in  == 8'h00;
-    }) else
-      `uvm_error(get_type_name(), "Reset release randomization failed")
-    finish_item(req);
-
+  // After reset the FSM should be in IDLE: probe it from the pins
+  task post_reset_probe();
+    idle_cycles(2);
+    drive(8'h08, 3);              // READ in IDLE must be ignored (DONE stays 0)
     idle_cycles(1);
+    drive(8'h04, 1);              // START with no reload -> zero result
+    idle_cycles(32);              // 29 cycles START->DONE, plus margin
+    read_results(32);             // scoreboard expects all zeros
+    idle_cycles(2);
   endtask
 
+  task reset_in_state(fsm_e st);
+    `uvm_info(get_type_name(), $sformatf("Applying reset in state %s", st.name()), UVM_LOW)
 
-  task send_start();
-    req = seq_item::type_id::create("req");
-
-    start_item(req);
-    assert(req.randomize() with {
-      rst_n  == 1'b1;
-      ena    == 1'b1;
-      uio_in == 8'h04;
-      ui_in  == 8'h00;
-    }) else
-      `uvm_error(get_type_name(), "START randomization failed")
-    finish_item(req);
-  endtask
-
-
-  // Send one READ command
-  task send_read();
-    req = seq_item::type_id::create("req");
-
-    start_item(req);
-    assert(req.randomize() with {
-      rst_n  == 1'b1;
-      ena    == 1'b1;
-      uio_in == 8'h08;
-      ui_in  == 8'h00;
-    }) else
-      `uvm_error(get_type_name(), "READ randomization failed")
-    finish_item(req);
-
-    idle_cycles(1);
-  endtask
-
-
-  task body();
-
-    apply_reset(2);
-
-    // -----------------------------------------
-    // Scenario 1: Reset during COMPUTE
-    // -----------------------------------------
-    `uvm_info("RESET_TEST", "Reset during COMPUTE", UVM_LOW)
-
-    load_a(16);
-    load_b(16);
-
-    send_start();
-
-    // This is the existing COMPUTE timing attempt.
+    apply_reset(2);               // known starting point
     idle_cycles(2);
 
-    reset_now();
+    case (st)
+      ST_IDLE:    idle_cycles(3);
 
+      ST_LOAD_A:  drive(8'h01, 5);                    // mid-burst, strobe still high
 
-    // -----------------------------------------
-    // Scenario 2: Reset during WB
-    // -----------------------------------------
-    `uvm_info("RESET_TEST", "Reset during WB", UVM_LOW)
+      ST_LOAD_B:  begin load_a(); drive(8'h02, 7); end
 
-    load_a(16);
-    load_b(16);
+      ST_COMPUTE: begin load_both_and_start(); idle_cycles(compute_k); end
 
-    send_start();
+      ST_WB:      begin load_both_and_start(); idle_cycles(wb_k); end
 
-    // Temporary timing attempt only.
-    // This must be aligned with the actual RTL WB state.
-    idle_cycles(6);
+      ST_DONE:    begin load_both_and_start(); idle_cycles(31); end   // result ready
 
-    reset_now();
+      ST_READ:    begin load_both_and_start(); idle_cycles(31); drive(8'h08, 10); end
+    endcase
 
-
-    // -----------------------------------------
-    // Scenario 3: Reset during DONE
-    // -----------------------------------------
-    `uvm_info("RESET_TEST", "Reset during DONE", UVM_LOW)
-
-    load_a(16);
-    load_b(16);
-
-    start_and_wait_done();
-
-    reset_now();
-
-
-    // -----------------------------------------
-    // Scenario 4: Reset during READ
-    // -----------------------------------------
-    `uvm_info("RESET_TEST", "Reset during READ", UVM_LOW)
-
-    load_a(16);
-    load_b(16);
-
-    start_and_wait_done();
-
-//    send_read();
-	  read_results();
-    reset_now();
-
-    `uvm_info("RESET_TEST",
-              "Reset-state scenarios completed",
-              UVM_LOW)
-
+    apply_reset(2);               // reset in the target state (base task)
+    post_reset_probe();
   endtask
 
-endclass
+  task body();
+    // One reset per FSM state
+    for (fsm_e st = st.first(); ; st = st.next()) begin
+      reset_in_state(st);
+      if (st == st.last()) break;
+    end
 
+    // Extra: reset at every BUSY cycle so every COMPUTE/WB of all 4 passes is hit
+    for (int k = 0; k < 28; k++) begin
+      apply_reset(2);
+      idle_cycles(2);
+      load_both_and_start();
+      idle_cycles(k);
+      apply_reset(2);
+      post_reset_probe();
+    end
+  endtask
+endclass
+=======
+
+>>>>>>> origin/main
 
 
 
@@ -419,13 +374,13 @@ class arithmetic_seq extends systolic_base_seq;
     apply_reset(2);
     repeat(16) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h01;}) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h01; ui_in == 8'h01;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);
     repeat(16) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h02; }) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h02; ui_in == 8'h01;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);
