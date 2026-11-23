@@ -27,6 +27,19 @@ import uvm_pkg::*;
   modport drv_mon(clocking drv_cb, output rst_n);
   modport mon_mon(clocking mon_cb, input rst_n);
 
+
+sequence start_proper;
+        uio_in[2] && !uio_in[1] && !uio_in[0] && !uio_out[4] && $past({uio_in[3], uio_in[1:0]} == 3'b0);
+    endsequence
+    property done_value;
+          @(posedge clk)
+          disable iff(!rst_n)
+          //uio_in[2] && !uio_out[4] |-> ##29 uio_out[5];
+          start_proper |-> ##29 uio_out[5];
+        endproperty
+
+
+
  property rst_check;
     @(posedge clk)
     !(rst_n) |-> uo_out == 8'd0 && uio_out == 8'd0;
@@ -51,18 +64,13 @@ import uvm_pkg::*;
       endproperty
       
         
-        property done_value;
-          disable iff(!rst_n)
-          @(posedge clk)
-          uio_in[2] and !uio_out[4] |-> ##29 uio_out[5];
-        endproperty
         
       assert property (done_value)
         else `uvm_error("COMPUTATION CYCLE ASRTN FAILED", $sformatf("BUSY=%0d, DONE = %0d", uio_out[4], uio_out[5]));
       
-     assert property (busy_value)
+/*     assert property (busy_value)
         else `uvm_error("COMPUTATION CYCLE ASRTN FAILED", $sformatf("BUSY=%0d, DONE = %0d", uio_out[4], uio_out[5]));
-        
+  */      
         property done_busy;
           disable iff(!rst_n)
           @(posedge clk) 

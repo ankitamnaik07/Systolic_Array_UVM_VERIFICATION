@@ -58,7 +58,7 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
-	    assert(req.randomize() with {rst_n == 1'b1;  uio_in == 8'h08; ui_in=8'h0;}) else `uvm_error(get_type_name(), "rand failed");
+	    assert(req.randomize() with {rst_n == 1'b1;  uio_in == 8'h08;ui_in== 8'h00;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);
@@ -419,13 +419,13 @@ class arithmetic_seq extends systolic_base_seq;
     apply_reset(2);
     repeat(16) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h01; ui_in == 8'h01;}) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h01;}) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);
     repeat(16) begin
       start_item(req);
-      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h02; ui_in == 8'h01;}) else `uvm_error(get_type_name(), "rand failed");
+      assert(req.randomize() with {rst_n == 1'b1; ena == 1'b1; uio_in == 8'h02; }) else `uvm_error(get_type_name(), "rand failed");
       finish_item(req);
     end
     idle_cycles(1);

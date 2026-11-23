@@ -13,7 +13,7 @@ TOP           ?= tb_top
 TESTLIST ?= \
         reset_idle_test \
         reset_abort_test \
-	reset_state_test \
+        reset_state_test \
         ena_check_test \
         matrix_load_test \
         done_load_test \
@@ -32,7 +32,7 @@ TESTLIST ?= \
         upper_bits_test \
         read_retain_test
 
-NUM_RUNS       ?= 1
+NUM_RUNS       ?= 15
 SEED_LIST      ?= 1 10 25 50 100
 
 UVM_VERBOSITY  ?= UVM_LOW
@@ -51,30 +51,30 @@ DESIGN_VDB ?= simv.vdb
 SINGLE_ROOT ?= single_runs
 
 REGR_ROOT        ?= regression_cm
-REGR_RUNS_DIR     = $(REGR_ROOT)/runs
-REGR_MERGED_DIR   = $(REGR_ROOT)/merged
-REGR_MERGED       = $(REGR_MERGED_DIR)/simv
-REGR_REPORT       = $(REGR_MERGED_DIR)/report
+REGR_RUNS_DIR    = $(REGR_ROOT)/runs
+REGR_MERGED_DIR  = $(REGR_ROOT)/merged
+REGR_MERGED      = $(REGR_MERGED_DIR)/simv
+REGR_REPORT      = $(REGR_MERGED_DIR)/report
 
 # ---- RTL source files -----------------------------------------------
 
 RTL_SRCS = \
-        pe.v \
-        systolic_array.v \
-        project.v
+        src/hvl_top/RTL/pe.v \
+        src/hvl_top/RTL/systolic_array.v \
+        src/hvl_top/RTL/project.v
 
 # ---- Testbench source files -----------------------------------------
 
 TB_SRCS = \
-        interface.sv \
-        systolic_tb_pkg.sv \
-        tb_top.sv
+        sim/interface.sv \
+        sim/systolic_tb_pkg.sv \
+        sim/tb_top.sv
 
 ALL_SRCS = $(RTL_SRCS) $(TB_SRCS)
 
 # ---- VCS compile options --------------------------------------------
 
-VCS_FLAGS = -full64 -sverilog -ntb_opts uvm -licqueue \
+VCS_FLAGS = -full64 -sverilog -ntb_opts uvm -licqueue +incdir+sim \
             -debug_access+all \
             -assert svaext -lca -assert enable_diag \
             $(CM_OPTS)
@@ -112,12 +112,12 @@ vcs:
 #=====================================================================
 
 # Usage:
-# make run TEST=matrix_load_test
-# make run TEST=matrix_load_test SEED=42
+# make -f sim/Makefile run TEST=matrix_load_test
+# make -f sim/Makefile run TEST=matrix_load_test SEED=42
 
 run:
 ifndef TEST
-	$(error Usage: make run TEST=<test_name> [SEED=<n>])
+	$(error Usage: make -f sim/Makefile run TEST=<test_name> [SEED=<n>])
 endif
 
 	@rm -rf $(SINGLE_ROOT)/$(TEST)
@@ -187,18 +187,18 @@ regression:
 	    done; \
 	done
 
-	@$(MAKE) merge_regression
+	@$(MAKE) -f sim/Makefile merge_regression
 
 #=====================================================================
 # USER-DEFINED MULTI-SEED REGRESSION
 #=====================================================================
 
 # Runs every test with every seed in SEED_LIST.
-#
+
 # Usage:
-# make regression_seeds
-# make regression_seeds SEED_LIST="1 5 10 20"
-# make regression_seeds TESTLIST="matrix_load_test matrix_reload_test"
+# make -f sim/Makefile regression_seeds
+# make -f sim/Makefile regression_seeds SEED_LIST="1 5 10 20"
+# make -f sim/Makefile regression_seeds TESTLIST="matrix_load_test matrix_reload_test"
 
 regression_seeds:
 	@mkdir -p $(REGR_RUNS_DIR)
@@ -245,7 +245,7 @@ regression_seeds:
 	    done; \
 	done
 
-	@$(MAKE) merge_regression
+	@$(MAKE) -f sim/Makefile merge_regression
 
 #=====================================================================
 # MERGE COVERAGE
@@ -297,37 +297,37 @@ help:
 	@echo ""
 	@echo " Systolic Array UVM Verification"
 	@echo ""
-	@echo " make vcs"
+	@echo " make -f sim/Makefile vcs"
 	@echo "     Compile"
 	@echo ""
-	@echo " make run TEST=matrix_load_test"
+	@echo " make -f sim/Makefile run TEST=matrix_load_test"
 	@echo "     Run one test"
 	@echo ""
-	@echo " make run TEST=matrix_reload_test SEED=42"
+	@echo " make -f sim/Makefile run TEST=matrix_reload_test SEED=42"
 	@echo "     Run one test with a specific seed"
 	@echo ""
-	@echo " make regression"
+	@echo " make -f sim/Makefile regression"
 	@echo "     Automatic seed regression"
 	@echo ""
-	@echo " make regression NUM_RUNS=10"
+	@echo " make -f sim/Makefile regression NUM_RUNS=10"
 	@echo "     Automatic regression with 10 runs per test"
 	@echo ""
-	@echo " make regression_seeds"
+	@echo " make -f sim/Makefile regression_seeds"
 	@echo "     Run all tests with predefined seeds"
 	@echo ""
-	@echo " make regression_seeds SEED_LIST='1 5 10 20'"
+	@echo " make -f sim/Makefile regression_seeds SEED_LIST='1 5 10 20'"
 	@echo "     Run all tests with selected seeds"
 	@echo ""
-	@echo " make regression_seeds TESTLIST='matrix_load_test matrix_reload_test' SEED_LIST='1 10'"
+	@echo " make -f sim/Makefile regression_seeds TESTLIST='matrix_load_test matrix_reload_test' SEED_LIST='1 10'"
 	@echo "     Run selected tests with selected seeds"
 	@echo ""
-	@echo " make merge_regression"
+	@echo " make -f sim/Makefile merge_regression"
 	@echo "     Merge existing coverage databases"
 	@echo ""
-	@echo " make clean"
+	@echo " make -f sim/Makefile clean"
 	@echo "     Clean simulation files"
 	@echo ""
-	@echo " make clean_regression"
+	@echo " make -f sim/Makefile clean_regression"
 	@echo "     Clean regression results"
 	@echo ""
 	@echo " Total tests: $(words $(TESTLIST))"

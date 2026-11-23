@@ -1,12 +1,30 @@
-csrc/
+
+# VCS generated files
 simv
 simv.daidir/
+csrc/
 ucli.key
 vc_hdrs.h
+vcs.key
 *.log
+*.vpd
+*.vcd
+*.fsdb
 *.xml
+
+# Coverage databases
 simv.vdb/
+*.vdb/
 simv.cst/
+urgReport/
 verdi_config_file
+
+# Regression outputs
 single_runs/
 regression_cm/
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
