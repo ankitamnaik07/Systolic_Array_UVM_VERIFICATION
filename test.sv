@@ -35,6 +35,7 @@ class reset_idle_test extends systolic_base_test;
   endtask
 endclass
 
+<<<<<<< HEAD
 class systolic_reset_fsm_test extends systolic_base_test;
   `uvm_component_utils(systolic_reset_fsm_test)
 
@@ -58,6 +59,9 @@ class systolic_reset_fsm_test extends systolic_base_test;
 endclass
 
 /*
+=======
+
+>>>>>>> origin/main
 class reset_state_test extends systolic_base_test;
 
   `uvm_component_utils(reset_state_test)
@@ -81,7 +85,11 @@ task run_phase(uvm_phase phase);
   endtask
 
 endclass
+<<<<<<< HEAD
 */
+=======
+
+>>>>>>> origin/main
 
 
 class reset_abort_test extends systolic_base_test;

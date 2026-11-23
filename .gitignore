@@ -1,0 +1,12 @@
+csrc/
+simv
+simv.daidir/
+ucli.key
+vc_hdrs.h
+*.log
+*.xml
+simv.vdb/
+simv.cst/
+verdi_config_file
+single_runs/
+regression_cm/

@@ -12,7 +12,7 @@ class systolic_coverage extends uvm_subscriber #(seq_item);
     option.per_instance = 1;
 
     // Data coverage
-    cp_ui_in: coverpoint ui_in {
+    cp_ui_in: coverpoint ui_in[3:0] {
       bins ui_in_low[] = {[0:15]};
     }
 

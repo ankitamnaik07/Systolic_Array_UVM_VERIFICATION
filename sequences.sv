@@ -58,7 +58,11 @@ class systolic_base_seq extends uvm_sequence #(seq_item);
     req = seq_item::type_id::create("req");
     repeat(cycles) begin
       start_item(req);
+<<<<<<< HEAD
 	    assert(req.randomize() with {rst_n == 1'b1;  uio_in == 8'h08; ui_in inside {[8'h01:8'h0F]};}) else `uvm_error(get_type_name(), "rand failed");
+=======
+	    assert(req.randomize() with {rst_n == 1'b1;  uio_in == 8'h08; ui_in=8'h0;}) else `uvm_error(get_type_name(), "rand failed");
+>>>>>>> origin/main
       finish_item(req);
     end
     idle_cycles(1);
@@ -82,7 +86,11 @@ class reset_idle_seq extends systolic_base_seq;
 endclass
 
 
+<<<<<<< HEAD
 /*
+=======
+
+>>>>>>> origin/main
 class reset_state_seq extends systolic_base_seq;
   `uvm_object_utils(reset_state_seq)
 
@@ -221,6 +229,7 @@ class reset_state_seq extends systolic_base_seq;
   endtask
 
 endclass
+<<<<<<< HEAD
 */
 
 class systolic_reset_fsm_seq extends systolic_base_seq;
@@ -310,6 +319,9 @@ class systolic_reset_fsm_seq extends systolic_base_seq;
     end
   endtask
 endclass
+=======
+
+>>>>>>> origin/main
 
 
 

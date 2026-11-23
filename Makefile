@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ====================================================================
 # VCS / UVM Regression Makefile
 # Systolic Array UVM Verification
@@ -75,6 +76,86 @@ ALL_SRCS = $(RTL_SRCS) $(TB_SRCS)
 
 VCS_FLAGS = -full64 -sverilog -ntb_opts uvm-1.2 -licqueue \
             -debug_access+all \ -timescale="1ns/1ps" \
+=======
+
+#=====================================================================
+# VCS / UVM Regression Makefile
+# Systolic Array UVM Verification
+#=====================================================================
+
+# ---- Config ---------------------------------------------------------
+
+VCS           ?= vcs
+URG           ?= urg
+TOP           ?= tb_top
+
+TESTLIST ?= \
+        reset_idle_test \
+        reset_abort_test \
+	reset_state_test \
+        ena_check_test \
+        matrix_load_test \
+        done_load_test \
+        matrix_reload_test \
+        matrix_order_test \
+        arithmetic_test \
+        overflow_test \
+        read_wrap_test \
+        data_retain_test \
+        random_test \
+        priority_test \
+        wb_start_test \
+        invalid_req_test \
+        load_length_test \
+        back2back_test \
+        upper_bits_test \
+        read_retain_test
+
+NUM_RUNS       ?= 1
+SEED_LIST      ?= 1 10 25 50 100
+
+UVM_VERBOSITY  ?= UVM_LOW
+UVM_TIMEOUT    ?= 2000000
+
+PER_RUN_REPORT ?= 0
+
+# ---- Coverage options -----------------------------------------------
+
+CM_OPTS = -cm line+cond+fsm+tgl+branch+assert
+
+DESIGN_VDB ?= simv.vdb
+
+# ---- Output directories ---------------------------------------------
+
+SINGLE_ROOT ?= single_runs
+
+REGR_ROOT        ?= regression_cm
+REGR_RUNS_DIR     = $(REGR_ROOT)/runs
+REGR_MERGED_DIR   = $(REGR_ROOT)/merged
+REGR_MERGED       = $(REGR_MERGED_DIR)/simv
+REGR_REPORT       = $(REGR_MERGED_DIR)/report
+
+# ---- RTL source files -----------------------------------------------
+
+RTL_SRCS = \
+        pe.v \
+        systolic_array.v \
+        project.v
+
+# ---- Testbench source files -----------------------------------------
+
+TB_SRCS = \
+        interface.sv \
+        systolic_tb_pkg.sv \
+        tb_top.sv
+
+ALL_SRCS = $(RTL_SRCS) $(TB_SRCS)
+
+# ---- VCS compile options --------------------------------------------
+
+VCS_FLAGS = -full64 -sverilog -ntb_opts uvm -licqueue \
+            -debug_access+all \
+>>>>>>> origin/main
             -assert svaext -lca -assert enable_diag \
             $(CM_OPTS)
 
